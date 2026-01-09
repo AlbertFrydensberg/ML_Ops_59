@@ -1,3 +1,4 @@
+[project]
 name = "ml_ops_59"
 version = "0.1.0"
 description = "Wine classification using KNN"
@@ -11,3 +12,6 @@ dependencies = [
   "seaborn",
   "wandb"
 ]
+
+[project.scripts]
+train = "model_scripts.training:main"
