@@ -1,0 +1,13 @@
+name = "ml_ops_59"
+version = "0.1.0"
+description = "Wine classification using KNN"
+requires-python = ">=3.10"
+
+dependencies = [
+  "pandas",
+  "scikit-learn",
+  "kagglehub",
+  "matplotlib",
+  "seaborn",
+  "wandb"
+]
