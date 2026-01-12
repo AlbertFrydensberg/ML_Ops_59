@@ -22,6 +22,12 @@ dependencies = [
     "torch==2.6.0",
     "typer==0.15.1",
     "uvicorn==0.34.0",
+    "pandas",
+    "scikit-learn",
+    "kagglehub",
+    "matplotlib",
+    "seaborn",
+    "wandb"
 ]
 
 [dependency-groups]
@@ -35,6 +41,8 @@ dev = [
     "mkdocs-material==9.7.1",
     "mkdocstrings-python==2.0.1",
 ]
+[project.scripts]
+train = "model_scripts.training:main"
 
 
 [tool.uv.sources]
