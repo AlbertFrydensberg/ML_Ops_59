@@ -42,7 +42,7 @@ dev = [
     "mkdocstrings-python==2.0.1",
 ]
 [project.scripts]
-train = "model_scripts.training:main"
+train = "ml_ops_59.model_scripts.training:main"
 
 
 [tool.uv.sources]
