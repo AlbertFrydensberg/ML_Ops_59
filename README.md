@@ -1,3 +1,5 @@
+````markdown
+# ml_ops_59
 
 # ML_Ops_59
 
@@ -19,3 +21,57 @@ The wine dataset consists of **178 samples**, each with **13 numerical features*
 
 ### c. Expected Models
 The expected model for this project is the **K-Nearest Neighbors (KNN)** classifier. This model will demonstrate training, evaluation, experiment tracking, and deployment within an MLOps framework.
+
+Wine classification project with a standardized MLOps structure
+
+## Project structure
+
+The directory structure of the project looks like this:
+```txt
+├── .github/                  # Github actions and dependabot
+│   ├── dependabot.yaml
+│   └── workflows/
+│       └── tests.yaml
+├── configs/                  # Configuration files
+├── data/                     # Data directory
+│   ├── processed
+│   └── raw
+├── dockerfiles/              # Dockerfiles
+│   ├── api.Dockerfile
+│   └── train.Dockerfile
+├── docs/                     # Documentation
+│   ├── mkdocs.yml
+│   └── source/
+│       └── index.md
+├── models/                   # Trained models
+├── notebooks/                # Jupyter notebooks
+├── reports/                  # Reports
+│   └── figures/
+├── src/                      # Source code
+│   ├── project_name/
+│   │   ├── __init__.py
+│   │   ├── api.py
+│   │   ├── data.py
+│   │   ├── evaluate.py
+│   │   ├── models.py
+│   │   ├── train.py
+│   │   └── visualize.py
+└── tests/                    # Tests
+│   ├── __init__.py
+│   ├── test_api.py
+│   ├── test_data.py
+│   └── test_model.py
+├── .gitignore
+├── .pre-commit-config.yaml
+├── LICENSE
+├── pyproject.toml            # Python project file
+├── README.md                 # Project README
+└── tasks.py                  # Project tasks
+```
+
+
+Created using [mlops_template](https://github.com/SkafteNicki/mlops_template),
+a [cookiecutter template](https://github.com/cookiecutter/cookiecutter) for getting
+started with Machine Learning Operations (MLOps).
+
+````
