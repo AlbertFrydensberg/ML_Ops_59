@@ -1,7 +1,7 @@
 #this is the training pipeline
 
-from make_dataset import data_loader
-from model import create_model
+from .make_dataset import data_loader
+from .model import create_model
 
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
