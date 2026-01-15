@@ -1,5 +1,7 @@
 
-import kagglehub, pandas as pd, os
+import kagglehub
+import pandas as pd
+import os
 
 # Download latest version
 
