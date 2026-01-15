@@ -41,8 +41,10 @@ dev = [
     "mkdocs-material==9.7.1",
     "mkdocstrings-python==2.0.1",
 ]
+
 [project.scripts]
 train = "ml_ops_59.model_scripts.training:main"
+mlops = "ml_ops_59.cli:main"
 
 
 
