@@ -31,5 +31,9 @@ def data_check():
     typer.echo(f"OK: loaded {df.shape[0]} rows, {df.shape[1]} columns")
 
 
+def main():
+    app()
+
+
 if __name__ == "__main__":
     app()
