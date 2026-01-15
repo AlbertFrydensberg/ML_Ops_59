@@ -1,5 +1,4 @@
 import numpy as np
-import wandb
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
@@ -61,8 +60,8 @@ def sweep_trial(project_name="MLops_59", seed=42):
     # Logger owns wandb.init()
     wandb_logger = WandBLogger(project_name=project_name, enabled=True)
 
-    config = wandb.config
-    k = int(getattr(config, "K", 5))
+    config = wandb_logger.config
+    k = int(config.get("K", 5))
 
     model = create_model(n_neighbors=k)
     model.fit(X_train, y_train)

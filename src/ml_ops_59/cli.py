@@ -31,9 +31,22 @@ def data_check():
     typer.echo(f"OK: loaded {df.shape[0]} rows, {df.shape[1]} columns")
 
 
+from ml_ops_59.train import train as train_one
+
+@app.command()
+def train(
+    k: Annotated[int, typer.Option("--k", help="Number of neighbors")] = 5,
+    test_size: Annotated[float, typer.Option("--test-size")] = 0.2,
+    seed: Annotated[int, typer.Option("--seed")] = 42,
+):
+    """Train a single KNN run and print validation accuracy."""
+    acc = train_one(n_neighbors=k, test_size=test_size, seed=seed)
+    typer.echo(f"Validation accuracy: {acc:.4f}")
+
+
 def main():
     app()
 
 
 if __name__ == "__main__":
-    app()
+    main()
