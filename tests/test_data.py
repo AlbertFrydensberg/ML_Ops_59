@@ -30,7 +30,6 @@ def test_no_missing_values_in_critical_columns():
     # target must not be missing
     assert df["class"].notna().all(), "Found missing values in 'class'."
 
-    # If you want: enforce no NaNs anywhere
     assert df.isna().sum().sum() == 0, "Dataset contains missing values."
 
 
