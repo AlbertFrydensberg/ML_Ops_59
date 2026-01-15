@@ -76,10 +76,10 @@ will check the repositories and the code to verify your answers.
 
 ### Week 2
 
-* [ ] Write unit tests related to the data part of your code (M16)
-* [ ] Write unit tests related to model construction and or model training (M16)
-* [ ] Calculate the code coverage (M16)
-* [ ] Get some continuous integration running on the GitHub repository (M17)
+* [x] Write unit tests related to the data part of your code (M16)
+* [x] Write unit tests related to model construction and or model training (M16)
+* [x] Calculate the code coverage (M16)
+* [x] Get some continuous integration running on the GitHub repository (M17)
 * [ ] Add caching and multi-os/python/pytorch testing to your continuous integration (M17)
 * [ ] Add a linting step to your continuous integration (M17)
 * [ ] Add pre-commit hooks to your version control setup (M18)
@@ -166,6 +166,7 @@ will check the repositories and the code to verify your answers.
 > *We used ... for managing our dependencies. The list of dependencies was auto-generated using ... . To get a*
 > *complete copy of our development environment, one would have to run the following commands*
 >
+
 > Answer:
 
 --- question 4 fill here ---
@@ -218,7 +219,7 @@ will check the repositories and the code to verify your answers.
 >
 > Answer:
 
---- question 7 fill here ---
+--- In total, ten tests were implemented. Six tests focus on data validation, ensuring that the dataset loads correctly, contains the expected columns, has no missing or duplicate values, and that both features and class labels are numeric and within reasonable ranges. The remaining four tests target the model and training pipeline, verifying correct KNN model creation, valid and reproducible training accuracy, and that model predictions have the correct output shape. Together, these tests validate both data integrity and model reliability. The ten tests are naturally not exhaustive but gave us a clear understanding of how to work with tests and try to predict what could go wrong in data and model implementation ---
 
 ### Question 8
 
@@ -233,7 +234,7 @@ will check the repositories and the code to verify your answers.
 >
 > Answer:
 
---- question 8 fill here ---
+--- Total code coverage so far is 29%. We would not trust that our code is error free with a coverage of 100% because the testings have to be clever and well thought for it to be error free. We cannot predict every error that we run into so there will naturally be some ongoing debugging/error solving as we execute the code. ---
 
 ### Question 9
 
@@ -248,7 +249,7 @@ will check the repositories and the code to verify your answers.
 >
 > Answer:
 
---- question 9 fill here ---
+--- Branches and pull requests were not used in this project, as development was done directly on the main branch- This is also because our group was working close together in the project so we could ealisy align the work being done. Using branches and pull requests could have improved version control. Branches allow features or fixes to be developed in isolation, while pull requests enable code review and safer integration, reducing the risk of errors and improving collaboration. ---
 
 ### Question 10
 
