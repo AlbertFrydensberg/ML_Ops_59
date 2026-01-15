@@ -3,24 +3,28 @@ import numpy as np
 # import matplotlib.pyplot as plt
 
 
-def compute_confusion_matrix(y_true: np.ndarray, y_pred: np.ndarray, num_classes: int) -> np.ndarray:
+import numpy as np
+
+def compute_confusion_matrix(y_true, y_pred, class_names=None, num_classes=None):
     """
-    Compute confusion matrix
-
-    Args:
-        y_true: True labels (class indices)
-        y_pred: Predicted labels (class indices)
-        num_classes: Number of classes
-
-    Returns:
-        Confusion matrix of shape (num_classes, num_classes)
+    Compute confusion matrix that works with labels like {1,2,3} or {0,1,2}.
+    If class_names is provided, it defines the label order.
     """
-    confusion = np.zeros((num_classes, num_classes), dtype=int)
+    y_true = np.asarray(y_true)
+    y_pred = np.asarray(y_pred)
 
-    for true, pred in zip(y_true, y_pred):
-        confusion[true, pred] += 1
+    if class_names is None:
+        labels = np.unique(np.concatenate([y_true, y_pred]))
+    else:
+        labels = np.asarray(class_names)
 
-    return confusion
+    label_to_idx = {label: i for i, label in enumerate(labels)}
+    n = len(labels) if num_classes is None else num_classes
+
+    cm = np.zeros((n, n), dtype=int)
+    for t, p in zip(y_true, y_pred):
+        cm[label_to_idx[t], label_to_idx[p]] += 1
+    return cm
 
 
 def compute_metrics(y_true: np.ndarray, y_pred: np.ndarray, num_classes: int) -> dict:

@@ -1,0 +1,21 @@
+{
+  "os": "macOS-26.1-arm64-arm-64bit",
+  "python": "CPython 3.12.12",
+  "startedAt": "2026-01-15T13:33:29.548493Z",
+  "args": [
+    "--K=8",
+    "--seed=42"
+  ],
+  "program": "/Users/victorstege/Documents/GitHub/ML_Ops_59/src/ml_ops_59/sweep_entry.py",
+  "codePath": "src/ml_ops_59/sweep_entry.py",
+  "codePathLocal": "src/ml_ops_59/sweep_entry.py",
+  "git": {
+    "remote": "https://github.com/AlbertFrydensberg/ML_Ops_59.git",
+    "commit": "d1d60b22806cfe8b07aaf9b290568ef9ac177891"
+  },
+  "email": "s214995@dtu.dk",
+  "root": "/Users/victorstege/Documents/GitHub/ML_Ops_59",
+  "host": "MacBook-Air.local",
+  "executable": "/Users/victorstege/Documents/GitHub/ML_Ops_59/.venv/bin/python",
+  "writerId": "vsf6n1vak2szd3wrpeot9oht7x21o822"
+}
