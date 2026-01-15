@@ -1,4 +1,9 @@
 
+import numpy as np
+import matplotlib.pyplot as plt
+from typing import Optional
+
+
 def compute_confusion_matrix(y_true: np.ndarray, y_pred: np.ndarray, num_classes: int) -> np.ndarray:
     """
     Compute confusion matrix
