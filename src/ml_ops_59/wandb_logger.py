@@ -2,7 +2,7 @@
 Weights & Biases (WandB) integration for experiment tracking
 """
 
-from typing import Dict, Optional
+from typing import Dict, Optional, Any
 
 import numpy as np
 
@@ -12,117 +12,109 @@ try:
     WANDB_AVAILABLE = True
 except ImportError:
     WANDB_AVAILABLE = False
-    print("Warning: wandb not installed. Install with 'pip install wandb' for experiment tracking.")
+    wandb = None  # type: ignore
 
 
 class WandBLogger:
     """
-    Logger for tracking experiments with Weights & Biases
+    WandB logger that can be used for both:
+    - normal runs (no sweep)
+    - sweep runs (wandb.agent / wandb sweep)
     """
 
-    def __init__(self, project_name: str = "MLops_59", config: Optional[Dict] = None, enabled: bool = True):
-        """
-        Initialize WandB logger
+    def __init__(
+        self,
+        project_name: str = "MLops_59",
+        config: Optional[Dict[str, Any]] = None,
+        enabled: bool = True,
+    ):
+        self.enabled = bool(enabled and WANDB_AVAILABLE)
+        self._started_run = False  # did THIS logger call wandb.init?
 
-        Args:
-            project_name: Name of the WandB project
-            config: Configuration dictionary to log
-            enabled: Whether to enable WandB logging
-        """
-        self.enabled = enabled and WANDB_AVAILABLE
-
-        if self.enabled:
-            wandb.init(project=project_name, config=config)
-            self.run = wandb.run
-            print(f"WandB initialized. Run: {self.run.name}")
-        else:
+        if not self.enabled:
             self.run = None
-            if enabled and not WANDB_AVAILABLE:
-                print("WandB logging disabled: wandb package not available")
-            else:
-                print("WandB logging disabled")
+            return
 
-    def log_metrics(self, metrics: Dict, step: Optional[int] = None) -> None:
-        """
-        Log metrics to WandB
+        # If a run already exists (e.g., created by a sweep agent), reuse it.
+        if wandb.run is None:
+            wandb.init(project=project_name, config=config)
+            self._started_run = True
+        else:
+            # Still record config if provided
+            if config:
+                wandb.config.update(config, allow_val_change=True)
 
-        Args:
-            metrics: Dictionary of metrics to log
-            step: Step number (epoch number, iteration, etc.)
-        """
+        self.run = wandb.run
+
+        self.config = dict(wandb.config)
+
+    def log_metrics(self, metrics: Dict[str, Any], step: Optional[int] = None) -> None:
         if self.enabled:
             wandb.log(metrics, step=step)
 
-    def log_confusion_matrix(self, y_true: np.ndarray, y_pred: np.ndarray, class_names: Optional[list] = None) -> None:
-        """
-        Log confusion matrix to WandB
-
-        Args:
-            y_true: True labels
-            y_pred: Predicted labels
-            class_names: List of class names
-        """
+    def log_config(self, cfg: Dict[str, Any]) -> None:
+        """Add/override config values for this run."""
         if self.enabled:
+            wandb.config.update(cfg, allow_val_change=True)
+
+    def log_confusion_matrix(
+        self,
+        y_true: np.ndarray,
+        y_pred: np.ndarray,
+        class_names: Optional[list] = None,
+    ) -> None:
+        if not self.enabled:
+            return
+
+        try:
+            wandb.log(
+                {
+                    "confusion_matrix": wandb.plot.confusion_matrix(
+                        probs=None,
+                        y_true=y_true,
+                        preds=y_pred,
+                        class_names=class_names,
+                    )
+                }
+            )
+        except Exception:
+            # Very simple fallback
             try:
-                # WandB v0.13.0+ API (as specified in requirements.txt)
+                from sklearn.metrics import confusion_matrix as sklearn_cm
+
+                cm = sklearn_cm(y_true, y_pred)
                 wandb.log(
                     {
-                        "confusion_matrix": wandb.plot.confusion_matrix(
-                            probs=None, y_true=y_true, preds=y_pred, class_names=class_names
+                        "confusion_matrix_data": wandb.Table(
+                            data=cm.tolist(),
+                            columns=class_names
+                            if class_names
+                            else [f"Class {i}" for i in range(cm.shape[1])],
                         )
                     }
                 )
-            except (TypeError, AttributeError):
-                # Fallback for API changes in future WandB versions
-                # Note: scikit-learn is required (listed in requirements.txt)
-                try:
-                    from sklearn.metrics import confusion_matrix as sklearn_cm
-
-                    cm = sklearn_cm(y_true, y_pred)
-                    wandb.log(
-                        {
-                            "confusion_matrix_data": wandb.Table(
-                                data=cm.tolist(),
-                                columns=class_names if class_names else [f"Class {i}" for i in range(cm.shape[1])],
-                            )
-                        }
-                    )
-                except Exception as e:
-                    print(f"Warning: Could not log confusion matrix to WandB: {e}")
+            except Exception as e:
+                print(f"Warning: Could not log confusion matrix to WandB: {e}")
 
     def log_image(self, name: str, image_path: str) -> None:
-        """
-        Log image to WandB
-
-        Args:
-            name: Name of the image
-            image_path: Path to the image file
-        """
         if self.enabled:
             wandb.log({name: wandb.Image(image_path)})
 
-    def log_model_architecture(self, model_summary: str) -> None:
+    def log_model_architecture(self, info: Any) -> None:
         """
-        Log model architecture summary
+        Log model info in config.
+        - If you pass a dict, it updates config with that dict.
+        - If you pass a string, it stores it under 'model_architecture'.
+        """
+        if not self.enabled:
+            return
 
-        Args:
-            model_summary: String description of model architecture
-        """
-        if self.enabled:
-            wandb.config.update({"model_architecture": model_summary})
-
-    def watch_gradients(self, model) -> None:
-        """
-        Watch model gradients (if applicable)
-
-        Args:
-            model: Neural network model
-        """
-        # For our NumPy implementation, we can log gradient norms manually
-        pass
+        if isinstance(info, dict):
+            wandb.config.update(info, allow_val_change=True)
+        else:
+            wandb.config.update({"model_architecture": str(info)}, allow_val_change=True)
 
     def finish(self) -> None:
-        """Finish the WandB run"""
-        if self.enabled:
+        """Finish the WandB run (only if this logger started it)."""
+        if self.enabled and self._started_run:
             wandb.finish()
-            print("WandB run finished")
