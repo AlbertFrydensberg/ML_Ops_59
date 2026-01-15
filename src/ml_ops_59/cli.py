@@ -20,7 +20,7 @@ def data_download(
 ):
     """Download wine dataset and save it under data/raw/."""
     save_raw_csv(out_path=out, overwrite=overwrite)
-    typer.echo(f"✅ Saved dataset to: {out}")
+    typer.echo(f"Saved dataset to: {out}")
 
 
 @app.command()
@@ -28,7 +28,7 @@ def data_check():
     """Load the dataset and run simple validation checks."""
     df = data_loader()
     validate_data(df)
-    typer.echo(f"✅ OK: loaded {df.shape[0]} rows, {df.shape[1]} columns")
+    typer.echo(f"OK: loaded {df.shape[0]} rows, {df.shape[1]} columns")
 
 
 if __name__ == "__main__":
