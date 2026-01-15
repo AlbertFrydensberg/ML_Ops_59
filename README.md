@@ -33,6 +33,7 @@ The directory structure of the project looks like this:
 │   └── workflows/
 │       └── tests.yaml
 ├── configs/                  # Configuration files
+│   ├── sweep.yaml
 ├── data/                     # Data directory
 │   ├── processed
 │   └── raw
@@ -51,12 +52,14 @@ The directory structure of the project looks like this:
 │   ├── project_name/
 │   │   ├── __init__.py
 │   │   ├── api.py
+│   │   ├── cli.py
 │   │   ├── data.py
 │   │   ├── evaluate.py
-│   │   ├── models.py
+│   │   ├── model.py
+│   │   ├── sweep_entry.py
 │   │   ├── train.py
-|   |   ├── wandb_logger.py
-│   │   └── visualize.py
+|   |   ├── visualize.py
+│   │   └── wandb_logger.py
 └── tests/                    # Tests
 │   ├── __init__.py
 │   ├── test_api.py
