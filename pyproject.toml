@@ -28,6 +28,7 @@ dependencies = [
     "matplotlib",
     "seaborn",
     "wandb",
+    "numpy==1.26.4", 
 ]
 
 [dependency-groups]
