@@ -1,7 +1,7 @@
-
-#this is the model file
+# this is the model file
 
 from sklearn.neighbors import KNeighborsClassifier
+
 
 def create_model(n_neighbors=5):
     """
