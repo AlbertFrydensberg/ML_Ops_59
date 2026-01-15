@@ -1,9 +1,9 @@
-
 import kagglehub
 import pandas as pd
 import os
 
 # Download latest version
+
 
 def data_loader():
     path = kagglehub.dataset_download("tawfikelmetwally/wine-dataset")
