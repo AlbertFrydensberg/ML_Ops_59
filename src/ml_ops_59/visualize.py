@@ -3,9 +3,10 @@ Utility functions for evaluation and visualization
 Including accuracy computation, confusion matrix, and plotting
 """
 
-import numpy as np
-import matplotlib.pyplot as plt
 from typing import Optional
+
+import matplotlib.pyplot as plt
+import numpy as np
 
 
 def plot_confusion_matrix(

@@ -1,6 +1,7 @@
+import os
+
 import kagglehub
 import pandas as pd
-import os
 
 
 def data_loader():
