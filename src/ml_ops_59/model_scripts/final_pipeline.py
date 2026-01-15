@@ -7,7 +7,7 @@ import numpy as np
 from make_dataset import data_loader
 from model import create_model
 import wandb
-from wandb_logger import WandBLogger
+from ml_ops_59.wandb_logger import WandBLogger
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import accuracy_score
