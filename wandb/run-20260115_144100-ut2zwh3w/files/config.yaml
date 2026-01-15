@@ -1,0 +1,57 @@
+_wandb:
+    value:
+        cli_version: 0.23.1
+        e:
+            soz4arjmw9gwdyultiotyc9r0kuo6j8v:
+                apple:
+                    ecpuCores: 6
+                    gpuCores: 8
+                    memoryGb: 16
+                    name: Apple M4
+                    pcpuCores: 4
+                    ramTotalBytes: "17179869184"
+                args:
+                    - --K=10
+                    - --seed=42
+                codePath: src/ml_ops_59/sweep_entry.py
+                codePathLocal: src/ml_ops_59/sweep_entry.py
+                cpu_count: 10
+                cpu_count_logical: 10
+                disk:
+                    /:
+                        total: "245107195904"
+                        used: "163925897216"
+                email: s214995@dtu.dk
+                executable: /Users/victorstege/Documents/GitHub/ML_Ops_59/.venv/bin/python
+                git:
+                    commit: 88221a183b7d4d81325b617bd2389f1c7970913f
+                    remote: https://github.com/AlbertFrydensberg/ML_Ops_59.git
+                host: MacBook-Air.local
+                memory:
+                    total: "17179869184"
+                os: macOS-26.1-arm64-arm-64bit
+                program: /Users/victorstege/Documents/GitHub/ML_Ops_59/src/ml_ops_59/sweep_entry.py
+                python: CPython 3.12.12
+                root: /Users/victorstege/Documents/GitHub/ML_Ops_59
+                startedAt: "2026-01-15T13:41:00.385912Z"
+                writerId: soz4arjmw9gwdyultiotyc9r0kuo6j8v
+        m: []
+        python_version: 3.12.12
+        t:
+            "1":
+                - 5
+                - 53
+            "2":
+                - 5
+                - 53
+            "3":
+                - 2
+                - 14
+            "4": 3.12.12
+            "5": 0.23.1
+            "12": 0.23.1
+            "13": darwin-arm64
+K:
+    value: 10
+seed:
+    value: 42
