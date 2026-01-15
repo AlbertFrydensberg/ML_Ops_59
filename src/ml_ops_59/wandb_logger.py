@@ -2,8 +2,9 @@
 Weights & Biases (WandB) integration for experiment tracking
 """
 
+from typing import Dict, Optional
+
 import numpy as np
-from typing import Optional, Dict
 
 try:
     import wandb

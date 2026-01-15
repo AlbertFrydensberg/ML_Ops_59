@@ -1,16 +1,14 @@
-from ml_ops_59.model import create_model
-from ml_ops_59.data import data_loader
-from ml_ops_59.visualize import plot_confusion_matrix
-from ml_ops_59.evaluate import compute_confusion_matrix, compute_metrics
-
-
 import numpy as np
 import wandb
-from wandb_logger import WandBLogger
+from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
-from sklearn.metrics import accuracy_score
+from wandb_logger import WandBLogger
 
+from ml_ops_59.data import data_loader
+from ml_ops_59.evaluate import compute_confusion_matrix, compute_metrics
+from ml_ops_59.model import create_model
+from ml_ops_59.visualize import plot_confusion_matrix
 
 """
 Training a KNN on vine data - Simple without sweep
