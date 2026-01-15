@@ -55,6 +55,7 @@ The directory structure of the project looks like this:
 │   │   ├── evaluate.py
 │   │   ├── models.py
 │   │   ├── train.py
+|   |   ├── wandb_logger.py
 │   │   └── visualize.py
 └── tests/                    # Tests
 │   ├── __init__.py
