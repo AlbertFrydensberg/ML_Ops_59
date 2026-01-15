@@ -12,13 +12,13 @@ def test_data_loads_as_dataframe():
 
 def test_expected_columns_present():
     """
-    Wine datasets typically contain a 'quality' label and several numeric features.
+    Wine datasets typically contain a 'class' label and several numeric features.
     This test checks the most common column names, but stays flexible:
-    - requires 'quality'
+    - requires 'class'
     - requires at least a reasonable number of feature columns
     """
     df = data_loader()
-    assert "quality" in df.columns, "Expected a 'quality' column (target label)."
+    assert "class" in df.columns, "Expected a 'class' column (target label)."
     assert df.shape[1] >= 5, "Expected at least 5 columns (features + target)."
 
 
@@ -28,24 +28,23 @@ def test_no_missing_values_in_critical_columns():
     """
     df = data_loader()
     # target must not be missing
-    assert df["quality"].notna().all(), "Found missing values in 'quality'."
+    assert df["class"].notna().all(), "Found missing values in 'class'."
 
-    # If you want: enforce no NaNs anywhere
     assert df.isna().sum().sum() == 0, "Dataset contains missing values."
 
 
-def test_quality_is_numeric_and_in_reasonable_range():
+def test_class_is_numeric_and_in_reasonable_range():
     """
     We test that our labels are integers.
     """
     df = data_loader()
 
-    assert pd.api.types.is_numeric_dtype(df["quality"]), "'quality' must be numeric."
+    assert pd.api.types.is_numeric_dtype(df["class"]), "'class' must be numeric."
 
-    qmin = df["quality"].min()
-    qmax = df["quality"].max()
-    assert qmin >= 0, f"Unexpected minimum quality: {qmin}"
-    assert qmax <= 10, f"Unexpected maximum quality: {qmax}"
+    qmin = df["class"].min()
+    qmax = df["class"].max()
+    assert qmin >= 0, f"Unexpected minimum class: {qmin}"
+    assert qmax <= 10, f"Unexpected maximum class: {qmax}"
 
 
 def test_feature_columns_are_numeric():
@@ -54,7 +53,7 @@ def test_feature_columns_are_numeric():
     """
     df = data_loader()
 
-    feature_cols = [c for c in df.columns if c != "quality"]
+    feature_cols = [c for c in df.columns if c != "class"]
     non_numeric = [c for c in feature_cols if not pd.api.types.is_numeric_dtype(df[c])]
 
     assert len(feature_cols) > 0, "No feature columns found."
