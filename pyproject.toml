@@ -2,6 +2,9 @@
 requires = ["uv_build>=0.9.22,<0.10.0"]
 build-backend = "uv_build"
 
+[tool.ruff]
+lint.select = ["I"]
+
 [project]
 name = "ml_ops_59"
 version = "0.0.1"
