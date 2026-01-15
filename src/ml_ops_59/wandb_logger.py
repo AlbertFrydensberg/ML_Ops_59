@@ -46,6 +46,8 @@ class WandBLogger:
 
         self.run = wandb.run
 
+        self.config = dict(wandb.config)
+
     def log_metrics(self, metrics: Dict[str, Any], step: Optional[int] = None) -> None:
         if self.enabled:
             wandb.log(metrics, step=step)
