@@ -2,9 +2,6 @@
 requires = ["uv_build>=0.9.22,<0.10.0"]
 build-backend = "uv_build"
 
-[tool.ruff]
-lint.select = ["I"]
-
 [project]
 name = "ml_ops_59"
 version = "0.0.1"
@@ -48,6 +45,7 @@ dev = [
 train = "ml_ops_59.model_scripts.training:main"
 
 
+
 [tool.uv.sources]
 torch = [
     { index = "pytorch-cpu" },
@@ -62,7 +60,9 @@ url = "https://download.pytorch.org/whl/cpu"
 explicit = true
 
 [tool.ruff]
+lint.select = ["I"]
 line-length = 120
 
 [tool.coverage.run]
 omit = ["tests/*"]
+
