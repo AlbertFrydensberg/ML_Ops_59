@@ -81,8 +81,8 @@ def sweep_trial(project_name="MLops_59", seed=42):
         }
     )
 
-    confusion = compute_confusion_matrix(y_test, preds, num_classes)
     class_names = [1, 2, 3]
+    confusion = compute_confusion_matrix(y_test, preds, class_names=class_names)
     plot_confusion_matrix(confusion, class_names, "confusion_matrix.png")
 
     wandb_logger.log_image("confusion_matrix", "confusion_matrix.png")
