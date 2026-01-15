@@ -1,0 +1,6 @@
+wandb_version: 1
+
+K:
+  value: 7
+seed:
+  value: 42
