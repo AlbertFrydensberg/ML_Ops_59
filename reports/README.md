@@ -52,26 +52,26 @@ will check the repositories and the code to verify your answers.
 
 ### Week 1
 
-* [ ] Create a git repository (M5)
-* [ ] Make sure that all team members have write access to the GitHub repository (M5)
-* [ ] Create a dedicated environment for you project to keep track of your packages (M2)
-* [ ] Create the initial file structure using cookiecutter with an appropriate template (M6)
-* [ ] Fill out the `data.py` file such that it downloads whatever data you need and preprocesses it (if necessary) (M6)
-* [ ] Add a model to `model.py` and a training procedure to `train.py` and get that running (M6)
-* [ ] Remember to fill out the `requirements.txt` and `requirements_dev.txt` file with whatever dependencies that you
+* [x] Create a git repository (M5)
+* [x] Make sure that all team members have write access to the GitHub repository (M5)
+* [x] Create a dedicated environment for you project to keep track of your packages (M2)
+* [x] Create the initial file structure using cookiecutter with an appropriate template (M6)
+* [x] Fill out the `data.py` file such that it downloads whatever data you need and preprocesses it (if necessary) (M6)
+* [x] Add a model to `model.py` and a training procedure to `train.py` and get that running (M6)
+* [x] Remember to fill out the `requirements.txt` and `requirements_dev.txt` file with whatever dependencies that you
     are using (M2+M6)
-* [ ] Remember to comply with good coding practices (`pep8`) while doing the project (M7)
-* [ ] Do a bit of code typing and remember to document essential parts of your code (M7)
+* [x] Remember to comply with good coding practices (`pep8`) while doing the project (M7)
+* [x] Do a bit of code typing and remember to document essential parts of your code (M7)
 * [ ] Setup version control for your data or part of your data (M8)
-* [ ] Add command line interfaces and project commands to your code where it makes sense (M9)
+* [x] Add command line interfaces and project commands to your code where it makes sense (M9)
 * [ ] Construct one or multiple docker files for your code (M10)
 * [ ] Build the docker files locally and make sure they work as intended (M10)
-* [ ] Write one or multiple configurations files for your experiments (M11)
+* [x] Write one or multiple configurations files for your experiments (M11)
 * [ ] Used Hydra to load the configurations and manage your hyperparameters (M11)
 * [ ] Use profiling to optimize your code (M12)
 * [ ] Use logging to log important events in your code (M14)
-* [ ] Use Weights & Biases to log training progress and other important metrics/artifacts in your code (M14)
-* [ ] Consider running a hyperparameter optimization sweep (M14)
+* [x] Use Weights & Biases to log training progress and other important metrics/artifacts in your code (M14)
+* [x] Consider running a hyperparameter optimization sweep (M14)
 * [ ] Use PyTorch-lightning (if applicable) to reduce the amount of boilerplate in your code (M15)
 
 ### Week 2
@@ -582,14 +582,14 @@ will check the repositories and the code to verify your answers.
 > *We have used ChatGPT to help debug our code. Additionally, we used GitHub Copilot to help write some of our code.*
 > Answer:
 
-fewafewubaofewnafioewnifowf ewafw afew afewafewafionewoanf waf ewonfieownaf fewnaiof newio fweanøf wea fewa
- fweafewa fewiagonwa ognwra'g
- wa
- gwreapig ipweroang w rag
- wa grwa
-  g
-  ew
-  gwea g
-  ew ag ioreabnguorwa bg̈́aw
-   wa
-   gew4igioera giroeahgi0wra gwa
+> *Student s215003 was in charge of developing of setting up the initial cookie cutter project and setting up the github repository.*
+
+> *Student s214995 was in charge of training our models in the cloud and deploying them afterwards and making docker containers for training our applications.*
+
+> *Student s214985 was in charge of setting up WandB, configurations and the training, evaluation and data scripts.*
+
+> *Student s214981 was in charge of training our models in the cloud and deploying them afterwards.*
+
+> *All members contributed to code by...*
+> *We have used ChatGPT to help debug our code. Additionally, we used GitHub Copilot to help write some of our code.*
+

@@ -20,14 +20,15 @@ requires-python = ">=3.12"
 dependencies = [
     "fastapi==0.115.6",
     "torch==2.6.0",
-    "typer==0.15.1",
+    "typer>=0.16.0",
     "uvicorn==0.34.0",
     "pandas",
     "scikit-learn",
     "kagglehub",
     "matplotlib",
     "seaborn",
-    "wandb"
+    "wandb",
+    "numpy==1.26.4", 
 ]
 
 [dependency-groups]
@@ -41,8 +42,10 @@ dev = [
     "mkdocs-material==9.7.1",
     "mkdocstrings-python==2.0.1",
 ]
+
 [project.scripts]
 train = "ml_ops_59.model_scripts.training:main"
+mlops = "ml_ops_59.cli:main"
 
 
 
