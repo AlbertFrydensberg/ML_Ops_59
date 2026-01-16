@@ -50,6 +50,9 @@ train = "ml_ops_59.model_scripts.training:main"
 mlops = "ml_ops_59.cli:main"
 
 
+[tool.uv]
+package = true
+
 
 [tool.uv.sources]
 torch = [
