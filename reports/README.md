@@ -68,7 +68,7 @@ will check the repositories and the code to verify your answers.
 * [x] Build the docker files locally and make sure they work as intended (M10)
 * [x] Write one or multiple configurations files for your experiments (M11)
 * [ ] Used Hydra to load the configurations and manage your hyperparameters (M11)
-* [ ] Use profiling to optimize your code (M12)
+* [x] Use profiling to optimize your code (M12)
 * [ ] Use logging to log important events in your code (M14)
 * [x] Use Weights & Biases to log training progress and other important metrics/artifacts in your code (M14)
 * [x] Consider running a hyperparameter optimization sweep (M14)
@@ -80,9 +80,9 @@ will check the repositories and the code to verify your answers.
 * [x] Write unit tests related to model construction and or model training (M16)
 * [x] Calculate the code coverage (M16)
 * [x] Get some continuous integration running on the GitHub repository (M17)
-* [ ] Add caching and multi-os/python/pytorch testing to your continuous integration (M17)
-* [ ] Add a linting step to your continuous integration (M17)
-* [ ] Add pre-commit hooks to your version control setup (M18)
+* [x] Add caching and multi-os/python/pytorch testing to your continuous integration (M17)
+* [x] Add a linting step to your continuous integration (M17)
+* [x] Add pre-commit hooks to your version control setup (M18)
 * [ ] Add a continues workflow that triggers when data changes (M19)
 * [ ] Add a continues workflow that triggers when changes to the model registry is made (M19)
 * [ ] Create a data storage in GCP Bucket for your data and link this with your data version control setup (M21)
@@ -300,7 +300,8 @@ will check the repositories and the code to verify your answers.
 >
 > Answer:
 
---- question 12 fill here ---
+--- Experiments were configured and tracked using Weights & Biases (W&B) instead of static configuration files. Hyperparameters such as the number of neighbours, train–test split, and random seed were logged for each run. Hyperparameter optimisation was performed using W&B sweeps. Experiments were executed from the command line, for example: python train.py and sweeps were launched using wandb sweep sweep.yaml
+wandb agent <our-sweep-id> ---
 
 ### Question 13
 
@@ -315,7 +316,7 @@ will check the repositories and the code to verify your answers.
 >
 > Answer:
 
---- question 13 fill here ---
+--- Reproducibility was ensured primarily through systematic experiment tracking using Weights & Biases (W&B). For each experiment, all relevant hyperparameters (such as the number of neighbours, train–test split, and random seed) as well as performance metrics were automatically logged in the WandB webside. This ensured that no information was lost between runs and that results could be traced back to the exact configuration that produced them. Additionally, fixed random seeds were used in data splitting to make experiments deterministic. W&B also stores timestamps, code versions, and run histories, which allows experiments to be compared and revisited at a later time. To reproduce an experiment, one can rerun the training script using the logged hyperparameters or relaunch a specific W&B run directly. Combined with version control in Git, this setup provides a clear and reproducible experimental workflow. ---
 
 ### Question 14
 
@@ -362,7 +363,7 @@ will check the repositories and the code to verify your answers.
 >
 > Answer:
 
---- question 16 fill here ---
+---  Debugging method was dependent on group member. Some just used the continuous integration setup and found errors when commiting code to github and others ran the experiements, found errors and tried to backtrack the errors by printing statements in the code or running only parts of the script. We also did some unit testing and model testing during the experiement phase at we could not foresee all the tests required for our code before be began to run the experiments. We also ran single profiling at some point on our train.py which showed that almost everything was 0.000, and we interpreted that as - either the script did very little work, or the expensive part wasn’t executed from that entry point. But we think it could be a usefill check in the future when working with way larger datasets and training setups to see where the most extensive runtimes are and identify potential optimisation areas in our code. ---
 
 ## Working in the cloud
 
@@ -593,4 +594,3 @@ will check the repositories and the code to verify your answers.
 
 > *All members contributed to code by...*
 > *We have used ChatGPT to help debug our code. Additionally, we used GitHub Copilot to help write some of our code.*
-
