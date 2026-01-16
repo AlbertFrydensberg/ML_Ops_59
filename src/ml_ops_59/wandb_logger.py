@@ -118,3 +118,13 @@ class WandBLogger:
         """Finish the WandB run (only if this logger started it)."""
         if self.enabled and self._started_run:
             wandb.finish()
+    
+    def log_table(self, name: str, rows: list, columns: Optional[list] = None) -> None:
+        if not self.enabled:
+            return
+        if columns is None and len(rows) > 0:
+            columns = list(rows[0].keys())
+        table = wandb.Table(columns=columns, data=[[r[c] for c in columns] for r in rows])
+        wandb.log({name: table})
+
+
