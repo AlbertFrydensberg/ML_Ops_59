@@ -1,0 +1,40 @@
+{
+  "os": "macOS-26.1-arm64-arm-64bit",
+  "python": "CPython 3.12.12",
+  "startedAt": "2026-01-15T13:43:39.654779Z",
+  "args": [
+    "--K=10",
+    "--seed=42"
+  ],
+  "program": "/Users/victorstege/Documents/GitHub/ML_Ops_59/src/ml_ops_59/sweep_entry.py",
+  "codePath": "src/ml_ops_59/sweep_entry.py",
+  "codePathLocal": "src/ml_ops_59/sweep_entry.py",
+  "git": {
+    "remote": "https://github.com/AlbertFrydensberg/ML_Ops_59.git",
+    "commit": "88221a183b7d4d81325b617bd2389f1c7970913f"
+  },
+  "email": "s214995@dtu.dk",
+  "root": "/Users/victorstege/Documents/GitHub/ML_Ops_59",
+  "host": "MacBook-Air.local",
+  "executable": "/Users/victorstege/Documents/GitHub/ML_Ops_59/.venv/bin/python",
+  "cpu_count": 10,
+  "cpu_count_logical": 10,
+  "disk": {
+    "/": {
+      "total": "245107195904",
+      "used": "164480106496"
+    }
+  },
+  "memory": {
+    "total": "17179869184"
+  },
+  "apple": {
+    "name": "Apple M4",
+    "ecpuCores": 6,
+    "pcpuCores": 4,
+    "gpuCores": 8,
+    "memoryGb": 16,
+    "ramTotalBytes": "17179869184"
+  },
+  "writerId": "cn4jagxk133vjtf7wuvprbuurdsy0c21"
+}

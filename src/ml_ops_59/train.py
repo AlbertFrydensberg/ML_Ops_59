@@ -21,7 +21,7 @@ def train(n_neighbors=5, test_size=0.2, seed=42):
     y = df["class"]
 
     X_train, X_test, y_train, y_test = train_test_split(
-        X, y, test_size=test_size, random_state=seed
+        X, y, test_size=test_size, random_state=seed, stratify=y
     )
 
     scaler = StandardScaler()
@@ -81,8 +81,8 @@ def sweep_trial(project_name="MLops_59", seed=42):
         }
     )
 
-    confusion = compute_confusion_matrix(y_test, preds, num_classes)
     class_names = [1, 2, 3]
+    confusion = compute_confusion_matrix(y_test, preds, class_names=class_names)
     plot_confusion_matrix(confusion, class_names, "confusion_matrix.png")
 
     wandb_logger.log_image("confusion_matrix", "confusion_matrix.png")

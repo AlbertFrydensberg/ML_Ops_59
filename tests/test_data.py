@@ -12,13 +12,13 @@ def test_data_loads_as_dataframe():
 
 def test_expected_columns_present():
     """
-    Wine datasets typically contain a 'quality' label and several numeric features.
+    Wine datasets typically contain a 'class' label and several numeric features.
     This test checks the most common column names, but stays flexible:
-    - requires 'quality'
+    - requires 'class'
     - requires at least a reasonable number of feature columns
     """
     df = data_loader()
-    assert "quality" in df.columns, "Expected a 'quality' column (target label)."
+    assert "class" in df.columns, "Expected a 'class' column (target label)."
     assert df.shape[1] >= 5, "Expected at least 5 columns (features + target)."
 
 
@@ -30,11 +30,10 @@ def test_no_missing_values_in_critical_columns():
     # target must not be missing
     assert df["class"].notna().all(), "Found missing values in 'class'."
 
-    # If you want: enforce no NaNs anywhere
     assert df.isna().sum().sum() == 0, "Dataset contains missing values."
 
 
-def test_quality_is_numeric_and_in_reasonable_range():
+def test_class_is_numeric_and_in_reasonable_range():
     """
     We test that our labels are integers.
     """
