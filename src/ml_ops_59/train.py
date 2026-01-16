@@ -21,7 +21,7 @@ def train(n_neighbors=5, test_size=0.2, seed=42):
     y = df["class"]
 
     X_train, X_test, y_train, y_test = train_test_split(
-        X, y, test_size=test_size, random_state=seed
+        X, y, test_size=test_size, random_state=seed, stratify=y
     )
 
     scaler = StandardScaler()
