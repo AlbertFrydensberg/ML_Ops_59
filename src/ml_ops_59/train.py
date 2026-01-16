@@ -172,3 +172,6 @@ def sweep_trial(project_name="MLops_59", seed=42):
     wandb_logger.finish()
     return acc_mean
 
+if __name__ == "__main__":
+    # quick local sanity run (no wandb sweep)
+    train(n_neighbors=5, test_size=0.2, seed=42, weights="uniform", p=2)
