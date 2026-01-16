@@ -1,6 +1,6 @@
-from ml_ops_59.data import data_loader
 import numpy as np
 import pandas as pd
+from ml_ops_59.data import data_loader
 
 
 def test_data_loads_as_dataframe():
@@ -67,4 +67,3 @@ def test_no_duplicate_rows():
     df = data_loader()
     dup_count = df.duplicated().sum()
     assert dup_count == 0, f"Found {dup_count} duplicate rows."
-

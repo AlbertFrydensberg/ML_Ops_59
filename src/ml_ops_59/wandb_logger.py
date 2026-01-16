@@ -2,7 +2,7 @@
 Weights & Biases (WandB) integration for experiment tracking
 """
 
-from typing import Dict, Optional, Any
+from typing import Any, Dict, Optional
 
 import numpy as np
 
@@ -87,9 +87,7 @@ class WandBLogger:
                     {
                         "confusion_matrix_data": wandb.Table(
                             data=cm.tolist(),
-                            columns=class_names
-                            if class_names
-                            else [f"Class {i}" for i in range(cm.shape[1])],
+                            columns=class_names if class_names else [f"Class {i}" for i in range(cm.shape[1])],
                         )
                     }
                 )
@@ -118,7 +116,7 @@ class WandBLogger:
         """Finish the WandB run (only if this logger started it)."""
         if self.enabled and self._started_run:
             wandb.finish()
-    
+
     def log_table(self, name: str, rows: list, columns: Optional[list] = None) -> None:
         if not self.enabled:
             return
@@ -126,5 +124,3 @@ class WandBLogger:
             columns = list(rows[0].keys())
         table = wandb.Table(columns=columns, data=[[r[c] for c in columns] for r in rows])
         wandb.log({name: table})
-
-

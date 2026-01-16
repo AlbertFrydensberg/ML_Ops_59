@@ -1,9 +1,6 @@
-import numpy as np
-
 # import matplotlib.pyplot as plt
-
-
 import numpy as np
+
 
 def compute_confusion_matrix(y_true, y_pred, class_names=None, num_classes=None):
     """

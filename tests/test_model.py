@@ -1,13 +1,11 @@
 import numpy as np
-
-from sklearn.metrics import accuracy_score
-from sklearn.dummy import DummyClassifier
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler
-
 from ml_ops_59.data import data_loader
 from ml_ops_59.model import create_model
 from ml_ops_59.train import train
+from sklearn.dummy import DummyClassifier
+from sklearn.metrics import accuracy_score
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
 
 
 def test_create_model_is_knn():
@@ -35,8 +33,6 @@ def test_train_reproducible_with_same_seed():
     assert np.isclose(acc1, acc2), f"Acc not reproducible: {acc1} vs {acc2}"
 
 
-
-
 def test_model_predict_output_shape_matches_targets():
     """
     Checks that predict returns one label per sample - could be mistakes when reshaping.
@@ -46,9 +42,7 @@ def test_model_predict_output_shape_matches_targets():
     X = df.drop(columns=["class"])
     y = df["class"]
 
-    X_train, X_test, y_train, y_test = train_test_split(
-        X, y, test_size=0.2, random_state=42
-    )
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
     scaler = StandardScaler()
     X_train_scaled = scaler.fit_transform(X_train)

@@ -2,7 +2,7 @@ from typing import Annotated
 
 import typer
 
-from ml_ops_59.data import save_raw_csv, data_loader, validate_data
+from ml_ops_59.data import data_loader, save_raw_csv, validate_data
 
 app = typer.Typer(help="ML Ops 59 CLI")
 
@@ -32,6 +32,7 @@ def data_check():
 
 
 from ml_ops_59.train import train as train_one
+
 
 @app.command()
 def train(

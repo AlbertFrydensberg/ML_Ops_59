@@ -1,17 +1,16 @@
-import numpy as np
-from sklearn.metrics import accuracy_score
-from sklearn.model_selection import train_test_split, StratifiedKFold
-from sklearn.preprocessing import StandardScaler
 # Import Hydra for config file
-import hydra 
+import hydra
+import numpy as np
 from omegaconf import DictConfig
+from sklearn.metrics import accuracy_score
+from sklearn.model_selection import StratifiedKFold, train_test_split
+from sklearn.preprocessing import StandardScaler
 
-
-from ml_ops_59.wandb_logger import WandBLogger
 from ml_ops_59.data import data_loader
 from ml_ops_59.evaluate import compute_confusion_matrix, compute_metrics
 from ml_ops_59.model import create_model
 from ml_ops_59.visualize import plot_confusion_matrix
+from ml_ops_59.wandb_logger import WandBLogger
 
 """
 Training a KNN on wine data (single run)
@@ -24,9 +23,7 @@ def train(n_neighbors=5, test_size=0.2, seed=42, weights="uniform", p=2):
     X = df.drop(columns=["class"])
     y = df["class"]
 
-    X_train, X_test, y_train, y_test = train_test_split(
-        X, y, test_size=test_size, random_state=seed, stratify=y
-    )
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, random_state=seed, stratify=y)
 
     scaler = StandardScaler()
     X_train = scaler.fit_transform(X_train)
@@ -45,6 +42,7 @@ def train(n_neighbors=5, test_size=0.2, seed=42, weights="uniform", p=2):
 """
 One WandB sweep trial (called by wandb.agent)
 """
+
 
 def sweep_trial(project_name="MLops_59", seed=42):
     """
@@ -68,8 +66,6 @@ def sweep_trial(project_name="MLops_59", seed=42):
         print(f"Warning: invalid p='{p}', defaulting to 2")
         p = 2
 
-
-
     wandb_logger.log_config(
         {
             "K": k,
@@ -83,7 +79,6 @@ def sweep_trial(project_name="MLops_59", seed=42):
             "metric": "minkowski",
         }
     )
-
 
     np.random.seed(trial_seed)
 
@@ -171,6 +166,7 @@ def sweep_trial(project_name="MLops_59", seed=42):
 
     wandb_logger.finish()
     return acc_mean
+
 
 if __name__ == "__main__":
     # quick local sanity run (no wandb sweep)
