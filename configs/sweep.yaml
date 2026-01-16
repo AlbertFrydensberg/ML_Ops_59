@@ -1,16 +1,28 @@
+# The parameters we're searching/able to vary
 program: src/ml_ops_59/sweep_entry.py
 method: bayes
 
 metric:
-  name: val_accuracy
+  name: cv_accuracy_mean
   goal: maximize
 
 parameters:
   K:
     values: [1,2,3,4,5,6,7,8,9,10]
+
+  weights:
+    values: ["uniform", "distance"]
+
+  p:
+    values: [1, 2]
+
+  cv_folds:
+    values: [3, 5, 10]
+
   seed:
     value: 42
 
 early_terminate:
   type: hyperband
   min_iter: 5
+  max_iter: 50

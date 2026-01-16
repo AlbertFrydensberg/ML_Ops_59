@@ -11,8 +11,9 @@ COPY README.md README.md
 COPY src/ src/
 COPY data/ data/
 COPY configs/ configs/
+COPY LICENSE LICENSE  
 
 WORKDIR /
 RUN uv sync --locked --no-cache --no-install-project
 
-ENTRYPOINT ["uv", "run", "src/ml_ops_59/train.py"]
+ENTRYPOINT ["uv", "run", "--directory", "/", "src/ml_ops_59/train.py"]
