@@ -8,27 +8,33 @@ on:
 
 jobs:
   build:
-
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        python-version: ["3.10", "3.11", "3.12"]
+       python-version: ["3.12"]
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v5
+      - name: Checkout
+        uses: actions/checkout@v5
 
-    - name: Setup uv
-      uses: astral-sh/setup-uv@v7
-      with:
-        python-version: 3.12
-        enable-cache: true
-    - name: Install dependencies
-      run: |
-        uv sync --dev --locked
-## code cov
-    - name: Test with pytest
-      run: |
-        uv run pytest -v
+      - name: Setup uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          python-version: ${{ matrix.python-version }}
+          enable-cache: true
+
+      - name: Install dependencies
+        run: uv sync --dev --locked
+
+      # linting (M17 requirement)
+      - name: Lint (ruff)
+        run: uv run ruff check .
+
+      - name: Format check (ruff)
+        run: uv run ruff format --check .
+
+      ## code cov / tests
+      - name: Test with pytest
+        run: uv run pytest -v
