@@ -1,3 +1,4 @@
+# Only the parameters we're searching 
 program: src/ml_ops_59/sweep_entry.py
 method: bayes
 

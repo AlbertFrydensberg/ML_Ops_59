@@ -1,4 +1,4 @@
-# Base configuration
+# Base configuration/complete settings
 model:
   n_neighbors: 5  # K value for KNN
 
