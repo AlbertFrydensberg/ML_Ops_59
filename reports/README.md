@@ -169,7 +169,7 @@ will check the repositories and the code to verify your answers.
 
 > Answer:
 
---- question 4 fill here ---
+--- Dependencies in the project were managed using a Python virtual environment combined with uv as the dependency manager. All project dependencies and their exact versions are defined in a pyproject.toml file, with a corresponding lock file generated automatically by uv. This ensures that all team members use identical package versions, eliminating the meme “works on my machine” issues and improving reproducibility. To set up an exact copy of the development environment, a new team member would follow a simple and well-defined process. First, the repository is cloned from version control. Next, a virtual environment is created locally. Once inside the project directory, the command uv sync is executed. This command reads the lock file and installs all required dependencies into the virtual environment with the correct versions. After activation of the virtual environment, the project is immediately ready to run without any manual package installation. This approach provides a fast, and reproducible setup process, making onboarding straightforward and ensuring consistency across development machines and operating systems. ---
 
 ### Question 5
 
