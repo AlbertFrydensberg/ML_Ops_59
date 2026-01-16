@@ -15,27 +15,41 @@ from ml_ops_59.wandb_logger import WandBLogger
 """
 Training a KNN on wine data (single run)
 """
-
-
-def train(n_neighbors=5, test_size=0.2, seed=42, weights="uniform", p=2):
+@hydra.main(config_path="../../configs", config_name="config", version_base=None)
+# Function args are defined in config.yaml
+def train(cfg: DictConfig):
+    # Set random seed from config
+    np.random.seed(cfg.data.seed)
+    # Load data
     df = data_loader()
-
     X = df.drop(columns=["class"])
     y = df["class"]
 
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, random_state=seed, stratify=y)
+    # Split data using config values
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, 
+        test_size=cfg.data.test_size, # From config: 0.2
+        random_state=cfg.data.seed, # From config: 42
+        stratify=y
+    )
 
+    # Scale features 
     scaler = StandardScaler()
     X_train = scaler.fit_transform(X_train)
     X_test = scaler.transform(X_test)
 
-    model = create_model(n_neighbors=n_neighbors, weights=weights, p=p)
+    # Create and train model using K from config
+    model = create_model(n_neighbors=cfg.model.n_neighbors)
     model.fit(X_train, y_train)
 
+    # Evaluate
     preds = model.predict(X_test)
     acc = accuracy_score(y_test, preds)
 
     print(f"Validation Accuracy: {acc:.4f}")
+    print(f"Model: KNN with K={cfg.model.n_neighbors}")
+    print(f"Test size: {cfg.data.test_size}, Seed: {cfg.data.seed}")
+
     return acc
 
 
@@ -43,21 +57,26 @@ def train(n_neighbors=5, test_size=0.2, seed=42, weights="uniform", p=2):
 One WandB sweep trial (called by wandb.agent)
 """
 
-
-def sweep_trial(project_name="MLops_59", seed=42):
+@hydra.main(config_path="../../configs", config_name="config", version_base=None)
+def sweep_trial(cfg: DictConfig):
     """
     One WandB sweep trial (called by wandb.agent)
     Does Stratified K-Fold CV and logs mean/std metrics + confusion matrix from OOF preds.
+    W&B will override cfg.model.n_neighbors with sweep values
     """
-    wandb_logger = WandBLogger(project_name=project_name, enabled=True)
+    wandb_logger = WandBLogger(
+        project_name=cfg.wandb.project_name, 
+        enabled=cfg.wandb.enabled
+    )
 
-    cfg = wandb_logger.config
-    k = int(cfg.get("K", 5))
-    cv_folds = int(cfg.get("cv_folds", 5))
-    trial_seed = int(cfg.get("seed", seed))
-    weights = str(cfg.get("weights", "uniform")).lower()
-    p = int(cfg.get("p", 2))
+    wandb_config = wandb_logger.config
+    k = int(wandb_config.get("K", cfg.model.n_neighbors))  # W&B sweep or Hydra default
+    cv_folds = int(wandb_config.get("cv_folds", cfg.training.cv_folds))  # W&B or Hydra
+    trial_seed = int(wandb_config.get("seed", cfg.data.seed))  # W&B or Hydra
+    weights = str(wandb_config.get("weights", cfg.model.weights)).lower()  # W&B or Hydra
+    p = int(wandb_config.get("p", cfg.model.p))  # W&B or Hydra
 
+    # Validation
     if weights not in {"uniform", "distance"}:
         print(f"Warning: invalid weights='{weights}', defaulting to 'uniform'")
         weights = "uniform"
@@ -65,7 +84,8 @@ def sweep_trial(project_name="MLops_59", seed=42):
     if p not in {1, 2}:
         print(f"Warning: invalid p='{p}', defaulting to 2")
         p = 2
-
+ 
+    # Log all config to W&B
     wandb_logger.log_config(
         {
             "K": k,
@@ -80,36 +100,43 @@ def sweep_trial(project_name="MLops_59", seed=42):
         }
     )
 
+    # Set random seed 
     np.random.seed(trial_seed)
 
+    # Load data
     df = data_loader()
     X = df.drop(columns=["class"]).values
     y = df["class"].values
 
+    # Setup cross-validation 
     skf = StratifiedKFold(n_splits=cv_folds, shuffle=True, random_state=trial_seed)
 
     fold_accs = []
     oof_preds = np.empty_like(y)
-
     fold_rows = []
 
+    # Cross-validation loop
     for fold_idx, (train_idx, val_idx) in enumerate(skf.split(X, y), start=1):
         X_train, X_val = X[train_idx], X[val_idx]
         y_train, y_val = y[train_idx], y[val_idx]
 
+        # Scale features
         scaler = StandardScaler()
         X_train = scaler.fit_transform(X_train)
         X_val = scaler.transform(X_val)
 
+        # Train model
         model = create_model(n_neighbors=k, weights=weights, p=p)
         model.fit(X_train, y_train)
 
+        # Predict and evaluate
         preds = model.predict(X_val)
         oof_preds[val_idx] = preds
 
         acc = accuracy_score(y_val, preds)
         fold_accs.append(acc)
-
+        
+        # Compute metrics
         num_classes = len(np.unique(y))
         m = compute_metrics(y_val, preds, num_classes)
 
@@ -147,7 +174,7 @@ def sweep_trial(project_name="MLops_59", seed=42):
         }
     )
 
-    num_classes = len(np.unique(y))
+    num_classes = cfg.training.num_classes  # From Hydra config
     overall = compute_metrics(y, oof_preds, num_classes)
     wandb_logger.log_metrics(
         {
@@ -157,7 +184,7 @@ def sweep_trial(project_name="MLops_59", seed=42):
         }
     )
 
-    class_names = sorted(list(np.unique(y)))
+    class_names = cfg.training.class_names  # From Hydra config
     confusion = compute_confusion_matrix(y, oof_preds, class_names=class_names)
     plot_confusion_matrix(confusion, class_names, "confusion_matrix.png")
 
@@ -170,4 +197,4 @@ def sweep_trial(project_name="MLops_59", seed=42):
 
 if __name__ == "__main__":
     # quick local sanity run (no wandb sweep)
-    train(n_neighbors=5, test_size=0.2, seed=42, weights="uniform", p=2)
+    train()
