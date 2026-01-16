@@ -1,4 +1,4 @@
-# Only the parameters we're searching 
+# The parameters we're searching/able to vary
 program: src/ml_ops_59/sweep_entry.py
 method: bayes
 

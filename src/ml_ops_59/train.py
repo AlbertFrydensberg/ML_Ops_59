@@ -2,6 +2,9 @@ import numpy as np
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
+# Import Hydra for config file
+import hydra 
+from omegaconf import DictConfig
 
 from ml_ops_59.wandb_logger import WandBLogger
 from ml_ops_59.data import data_loader
