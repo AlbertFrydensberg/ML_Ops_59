@@ -15,6 +15,8 @@ from ml_ops_59.wandb_logger import WandBLogger
 """
 Training a KNN on wine data (single run)
 """
+
+
 @hydra.main(config_path="../../configs", config_name="config", version_base=None)
 # Function args are defined in config.yaml
 def train(cfg: DictConfig):
@@ -27,13 +29,14 @@ def train(cfg: DictConfig):
 
     # Split data using config values
     X_train, X_test, y_train, y_test = train_test_split(
-        X, y, 
-        test_size=cfg.data.test_size, # From config: 0.2
-        random_state=cfg.data.seed, # From config: 42
-        stratify=y
+        X,
+        y,
+        test_size=cfg.data.test_size,  # From config: 0.2
+        random_state=cfg.data.seed,  # From config: 42
+        stratify=y,
     )
 
-    # Scale features 
+    # Scale features
     scaler = StandardScaler()
     X_train = scaler.fit_transform(X_train)
     X_test = scaler.transform(X_test)
@@ -57,6 +60,7 @@ def train(cfg: DictConfig):
 One WandB sweep trial (called by wandb.agent)
 """
 
+
 @hydra.main(config_path="../../configs", config_name="config", version_base=None)
 def sweep_trial(cfg: DictConfig):
     """
@@ -64,10 +68,7 @@ def sweep_trial(cfg: DictConfig):
     Does Stratified K-Fold CV and logs mean/std metrics + confusion matrix from OOF preds.
     W&B will override cfg.model.n_neighbors with sweep values
     """
-    wandb_logger = WandBLogger(
-        project_name=cfg.wandb.project_name, 
-        enabled=cfg.wandb.enabled
-    )
+    wandb_logger = WandBLogger(project_name=cfg.wandb.project_name, enabled=cfg.wandb.enabled)
 
     wandb_config = wandb_logger.config
     k = int(wandb_config.get("K", cfg.model.n_neighbors))  # W&B sweep or Hydra default
@@ -84,7 +85,7 @@ def sweep_trial(cfg: DictConfig):
     if p not in {1, 2}:
         print(f"Warning: invalid p='{p}', defaulting to 2")
         p = 2
- 
+
     # Log all config to W&B
     wandb_logger.log_config(
         {
@@ -100,7 +101,7 @@ def sweep_trial(cfg: DictConfig):
         }
     )
 
-    # Set random seed 
+    # Set random seed
     np.random.seed(trial_seed)
 
     # Load data
@@ -108,7 +109,7 @@ def sweep_trial(cfg: DictConfig):
     X = df.drop(columns=["class"]).values
     y = df["class"].values
 
-    # Setup cross-validation 
+    # Setup cross-validation
     skf = StratifiedKFold(n_splits=cv_folds, shuffle=True, random_state=trial_seed)
 
     fold_accs = []
@@ -135,7 +136,7 @@ def sweep_trial(cfg: DictConfig):
 
         acc = accuracy_score(y_val, preds)
         fold_accs.append(acc)
-        
+
         # Compute metrics
         num_classes = len(np.unique(y))
         m = compute_metrics(y_val, preds, num_classes)
