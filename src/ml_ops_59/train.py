@@ -47,8 +47,6 @@ def train(n_neighbors: int = 5, test_size: float = 0.2, seed: int = 42) -> float
     return float(acc)
 
 
-
-
 @hydra.main(config_path="../../configs", config_name="config", version_base=None)
 def train_hydra(cfg: DictConfig):
     acc = train(
@@ -62,6 +60,7 @@ def train_hydra(cfg: DictConfig):
     print(f"Test size: {cfg.data.test_size}, Seed: {cfg.data.seed}")
 
     return acc
+
 
 """
 One WandB sweep trial (called by wandb.agent)
