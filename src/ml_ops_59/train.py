@@ -17,44 +17,51 @@ Training a KNN on wine data (single run)
 """
 
 
-@hydra.main(config_path="../../configs", config_name="config", version_base=None)
-# Function args are defined in config.yaml
-def train(cfg: DictConfig):
-    # Set random seed from config
-    np.random.seed(cfg.data.seed)
-    # Load data
+def train(n_neighbors: int = 5, test_size: float = 0.2, seed: int = 42) -> float:
+    """Train a KNN on wine data (single run) and return accuracy."""
+
+    np.random.seed(seed)
+
     df = data_loader()
     X = df.drop(columns=["class"])
     y = df["class"]
 
-    # Split data using config values
     X_train, X_test, y_train, y_test = train_test_split(
         X,
         y,
-        test_size=cfg.data.test_size,  # From config: 0.2
-        random_state=cfg.data.seed,  # From config: 42
+        test_size=test_size,
+        random_state=seed,
         stratify=y,
     )
 
-    # Scale features
     scaler = StandardScaler()
     X_train = scaler.fit_transform(X_train)
     X_test = scaler.transform(X_test)
 
-    # Create and train model using K from config
-    model = create_model(n_neighbors=cfg.model.n_neighbors)
+    model = create_model(n_neighbors=n_neighbors)
     model.fit(X_train, y_train)
 
-    # Evaluate
     preds = model.predict(X_test)
     acc = accuracy_score(y_test, preds)
+
+    return float(acc)
+
+
+
+
+@hydra.main(config_path="../../configs", config_name="config", version_base=None)
+def train_hydra(cfg: DictConfig):
+    acc = train(
+        n_neighbors=cfg.model.n_neighbors,
+        test_size=cfg.data.test_size,
+        seed=cfg.data.seed,
+    )
 
     print(f"Validation Accuracy: {acc:.4f}")
     print(f"Model: KNN with K={cfg.model.n_neighbors}")
     print(f"Test size: {cfg.data.test_size}, Seed: {cfg.data.seed}")
 
     return acc
-
 
 """
 One WandB sweep trial (called by wandb.agent)
@@ -197,5 +204,4 @@ def sweep_trial(cfg: DictConfig):
 
 
 if __name__ == "__main__":
-    # quick local sanity run (no wandb sweep)
-    train()
+    train_hydra()
