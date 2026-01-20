@@ -42,5 +42,16 @@ jobs:
 
       - name: Check data statistics
         run: |
-          python dataset_statistics.py
+   - name: Check data statistics & generate report
+        run: |
+          python dataset_statistics.py > report.md
+
+      - name: Setup CML
+        uses: iterative/setup-cml@v2
+
+      - name: Comment on PR with CML
+        env:
+          REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          cml comment create report.md --watermark-title="Data Checker"          python dataset_statistics.py
 
