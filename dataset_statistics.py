@@ -4,7 +4,6 @@ from pathlib import Path
 
 import pandas as pd
 
-
 DATA_DIR = Path("data")
 
 
