@@ -9,6 +9,7 @@ from pathlib import Path
 from typing import Optional, Union
 
 import matplotlib
+
 matplotlib.use("Agg")  # Use non-interactive backend
 import matplotlib.pyplot as plt
 import numpy as np
