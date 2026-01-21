@@ -28,25 +28,29 @@ class WandBLogger:
         config: Optional[Dict[str, Any]] = None,
         enabled: bool = True,
     ):
+        self._started_run = False
         self.enabled = bool(enabled and WANDB_AVAILABLE)
-        self._started_run = False  # did THIS logger call wandb.init?
+
+        # Always define these so callers can rely on them
+        self.run = None
+        self.config: Dict[str, Any] = dict(config) if config else {}
 
         if not self.enabled:
-            self.run = None
+            # No wandb installed or explicitly disabled; keep config available
             return
 
         # If a run already exists (e.g., created by a sweep agent), reuse it.
         if wandb.run is None:
-            wandb.init(project=project_name, config=config)
+            wandb.init(project=project_name, config=self.config)
             self._started_run = True
         else:
-            # Still record config if provided
-            if config:
-                wandb.config.update(config, allow_val_change=True)
+            if self.config:
+                wandb.config.update(self.config, allow_val_change=True)
 
         self.run = wandb.run
-
+        # Refresh config from wandb (includes sweep overrides)
         self.config = dict(wandb.config)
+
 
     def log_metrics(self, metrics: Dict[str, Any], step: Optional[int] = None) -> None:
         if self.enabled:
