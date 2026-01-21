@@ -13,6 +13,8 @@ from pathlib import Path
 import warnings
 import logging
 
+
+
 def plot_confusion_matrix(
     confusion_matrix: np.ndarray, class_names: Optional[list] = None, save_path: Optional[str] = None
 ) -> None:
@@ -73,9 +75,10 @@ def plot_confusion_matrix(
 """
 Implementation of SHAP
 """
-# Suppress warnings and verbose SHAP logging
+# Suppress warnings and verbose SHAP logging (it has lots of annoy)
 warnings.filterwarnings('ignore', category=FutureWarning)
 logging.getLogger('shap').setLevel(logging.WARNING)
+
 
 # Ignore SHAP's numpy RNG warnings (it is not important, it is just a reminder for future package updates)
 warnings.filterwarnings('ignore', message='.*NumPy global RNG.*')
@@ -92,23 +95,6 @@ def generate_shap_explanations(
 ) -> dict:
     """
     Generate SHAP explanations for a trained model.
-    
-    Args:
-        model: Trained sklearn model with predict_proba method
-        X_train: Training data (for background)
-        X_test: Test data (to explain)
-        feature_names: List of feature names (optional)
-        n_background: Number of background samples for SHAP (more = slower but accurate)
-        n_explain: Number of test samples to explain
-        output_dir: Where to save plots
-        save_plots: Whether to save visualization files
-        
-    Returns:
-        dict with:
-            - shap_values: Raw SHAP values
-            - explainer: SHAP explainer object
-            - feature_names: Feature names used
-            - plot_paths: Paths to saved plots (if save_plots=True)
     """
 
     # Convert to numpy if needed
@@ -135,7 +121,7 @@ def generate_shap_explanations(
     explainer = shap.KernelExplainer(model.predict_proba, X_background)
     
     # Compute SHAP values
-    shap_values = explainer.shap_values(X_explain)
+    shap_values = explainer.shap_values(X_explain, silent=True)
     
     results = {
         'shap_values': shap_values,
@@ -155,7 +141,7 @@ def generate_shap_explanations(
             output_dir=output_dir
         )
         results['plot_paths'] = plot_paths
-    
+    # Only use results for plot, they are not printed to terminal or saved otherwise
     return results
 
 def _save_shap_plots(
@@ -163,7 +149,7 @@ def _save_shap_plots(
     X_explain: np.ndarray,
     feature_names: list,
     explainer,
-    model,
+    model,         
     output_dir: str
 ) -> dict:
     """Internal function to save SHAP visualization plots."""
