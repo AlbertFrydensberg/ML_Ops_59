@@ -78,7 +78,7 @@ The directory structure of the project looks like this:
 │           │   └── default.yaml
 │           ├── wandb/
 │           │   └── default.yaml
-│           └── config.yaml       # Global configuration
+│           └── config.yaml       # Global configuration using Hydra
 
 ├── tests/                        # Unit & integration tests
 │   ├── __init__.py

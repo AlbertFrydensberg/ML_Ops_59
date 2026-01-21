@@ -185,7 +185,7 @@ will check the repositories and the code to verify your answers.
 >
 > Answer:
 
---- question 5 fill here ---
+--- We have used the github folder primarily for the tests.yaml. We have deleted the notebooks folder as this was not useful for this particular project. ---
 
 ### Question 6
 

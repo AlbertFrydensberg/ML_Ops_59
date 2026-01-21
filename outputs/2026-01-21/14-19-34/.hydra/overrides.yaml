@@ -1,0 +1,3 @@
+- task=sweep
+- training.cv_folds=3
+- wandb.enabled=false
