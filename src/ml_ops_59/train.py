@@ -52,6 +52,9 @@ def train_single(
     preds = model.predict(X_test)
     acc = accuracy_score(y_test, preds)
 
+    # SHAP
+    generate_shap_explanations(model, X_train, X_test, X.columns.tolist())
+
     return float(acc)
 
 
@@ -64,8 +67,6 @@ def train_hydra(cfg: DictConfig):
     )
 
     print(f"Validation Accuracy: {acc:.4f}")
-    print(f"Model: KNN with K={cfg.model.n_neighbors}")
-    print(f"Test size: {cfg.data.test_size}, Seed: {cfg.data.seed}")
 
     return acc
 

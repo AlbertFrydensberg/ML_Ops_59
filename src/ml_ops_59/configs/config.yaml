@@ -10,6 +10,8 @@
 # loads one file from each group (model, data, training, wandb)
 # merges them into a single config object
 
+task: train
+
 defaults:
   - model: knn
   - data: wine
