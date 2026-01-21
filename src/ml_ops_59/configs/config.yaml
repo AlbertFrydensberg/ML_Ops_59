@@ -1,0 +1,18 @@
+# Base configuration/complete settings
+
+# Hydra treats configuration as a composition of small config pieces (“config groups”)
+# config.yaml is the root config. It doesn’t usually contain many hyperparameters itself;
+# instead it tells Hydra which pieces to load by default.
+
+# Hydra:
+# starts from config.yaml
+# reads the defaults: list
+# loads one file from each group (model, data, training, wandb)
+# merges them into a single config object
+
+defaults:
+  - model: knn
+  - data: wine
+  - training: default
+  - wandb: default
+  - _self_

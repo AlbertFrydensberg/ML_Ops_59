@@ -1,0 +1,4 @@
+project_name: "MLops_59"
+enabled: true
+mode: "online" # "online" or "offline"
+
