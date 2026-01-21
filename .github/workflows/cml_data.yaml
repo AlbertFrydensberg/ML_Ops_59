@@ -7,6 +7,8 @@ on:
     paths:
       - "**/*.dvc"
       - ".dvc/**"
+      - "dvc.lock"
+      - "dvc.yaml"
 
 jobs:
   run_data_checker:
@@ -29,16 +31,26 @@ jobs:
           pip install .[dev]
           pip list
 
-      - name: Auth with GCP
-        uses: google-github-actions/auth@v2
-        with:
-          credentials_json: ${{ secrets.GCP_SA_KEY }}
+      # Uncomment these only if you later configure a remote and need to pull data in CI.
+      # - name: Auth with GCP
+      #   uses: google-github-actions/auth@v2
+      #   with:
+      #     credentials_json: ${{ secrets.GCP_SA_KEY }}
+      #
+      # - name: Pull data
+      #   run: |
+      #     uv run dvc pull --no-run-cache
 
-      - name: Pull data
+      - name: Check data statistics & generate report
         run: |
-          dvc pull --no-run-cache
+          python dataset_statistics.py > report.md
 
-      - name: Check data statistics
+      - name: Setup CML
+        uses: iterative/setup-cml@v2
+
+      - name: Comment on PR with CML
+        env:
+          REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          python dataset_statistics.py
+          cml comment create report.md --watermark-title="Data Checker"
 

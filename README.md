@@ -33,6 +33,7 @@ The directory structure of the project looks like this:
 │   └── workflows/
 │       └── tests.yaml
 ├── configs/                  # Configuration files
+│   ├── config.yaml
 │   ├── sweep.yaml
 ├── data/                     # Data directory
 │   ├── processed
@@ -40,14 +41,15 @@ The directory structure of the project looks like this:
 ├── dockerfiles/              # Dockerfiles
 │   ├── api.Dockerfile
 │   └── train.Dockerfile
-├── docs/                     # Documentation
+├── docs/                     # Documentation (added later?)
 │   ├── mkdocs.yml
 │   └── source/
 │       └── index.md
 ├── models/                   # Trained models
 ├── notebooks/                # Jupyter notebooks
+├── outputs/                  # What is this used for?
 ├── reports/                  # Reports
-│   └── figures/
+│   └── figures/              
 ├── src/                      # Source code
 │   ├── project_name/
 │   │   ├── __init__.py
