@@ -48,6 +48,9 @@ def train_single(
     model = create_model(n_neighbors=n_neighbors, weights=weights, p=p)
     model.fit(X_train, y_train)
 
+    # SHAP
+    generate_shap_explanations(model, X_train, X_test, X.columns.tolist())
+
     preds = model.predict(X_test)
     acc = accuracy_score(y_test, preds)
     return float(acc)
