@@ -4,7 +4,7 @@ from pathlib import Path
 
 import pandas as pd
 
-DATA_DIR = Path("data")
+DATA_DIR = Path("data/raw")
 
 
 def main() -> None:
