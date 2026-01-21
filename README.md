@@ -33,6 +33,7 @@ The directory structure of the project looks like this:
 │   └── workflows/
 │       └── tests.yaml
 ├── configs/                  # Configuration files
+│   ├── config.yaml
 │   ├── sweep.yaml
 ├── data/                     # Data directory
 │   ├── processed
