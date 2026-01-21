@@ -148,7 +148,7 @@ will check the repositories and the code to verify your answers.
 >
 > Answer:
 
---- question 3 fill here ---
+--- We used the third-party framework scikit.learn as well as matplotlib, both of which are not covered in the course. scikit.learn is used to build a supervised machine learning classifier using the K-Nearest Neighbors (KNN) algorithm. The approach is chosen to have a relatively simple model we can ensure works in order to keep the focus on designing and implementing an end-to-end MLOps pipeline, which is the primary objective of this project. matplotlib ---
 
 ## Coding environment
 

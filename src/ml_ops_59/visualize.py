@@ -3,11 +3,15 @@ Utility functions for evaluation and visualization
 Including accuracy computation, confusion matrix, and plotting
 """
 
-from typing import Optional
+from typing import Optional, Union
 
 import matplotlib.pyplot as plt
 import numpy as np
-
+import pandas as pd
+import shap
+from pathlib import Path
+import warnings
+import logging
 
 def plot_confusion_matrix(
     confusion_matrix: np.ndarray, class_names: Optional[list] = None, save_path: Optional[str] = None
@@ -64,3 +68,127 @@ def plot_confusion_matrix(
     else:
         plt.show()
     plt.close()
+
+
+"""
+Implementation of SHAP
+"""
+# Suppress warnings and verbose SHAP logging
+warnings.filterwarnings('ignore', category=FutureWarning)
+logging.getLogger('shap').setLevel(logging.WARNING)
+
+# Ignore SHAP's numpy RNG warnings (it is not important, it is just a reminder for future package updates)
+warnings.filterwarnings('ignore', message='.*NumPy global RNG.*')
+
+def generate_shap_explanations(
+    model,
+    X_train: Union[np.ndarray, pd.DataFrame],
+    X_test: Union[np.ndarray, pd.DataFrame],
+    feature_names: Optional[list] = None,
+    n_background: int = 50,
+    n_explain: int = 10,
+    output_dir: str = "reports/figures",
+    save_plots: bool = True
+) -> dict:
+    """
+    Generate SHAP explanations for a trained model.
+    
+    Args:
+        model: Trained sklearn model with predict_proba method
+        X_train: Training data (for background)
+        X_test: Test data (to explain)
+        feature_names: List of feature names (optional)
+        n_background: Number of background samples for SHAP (more = slower but accurate)
+        n_explain: Number of test samples to explain
+        output_dir: Where to save plots
+        save_plots: Whether to save visualization files
+        
+    Returns:
+        dict with:
+            - shap_values: Raw SHAP values
+            - explainer: SHAP explainer object
+            - feature_names: Feature names used
+            - plot_paths: Paths to saved plots (if save_plots=True)
+    """
+
+    # Convert to numpy if needed
+    if isinstance(X_train, pd.DataFrame):
+        if feature_names is None:
+            feature_names = X_train.columns.tolist()
+        X_train = X_train.values
+    
+    if isinstance(X_test, pd.DataFrame):
+        if feature_names is None:
+            feature_names = X_test.columns.tolist()
+        X_test = X_test.values
+    
+    # Sample background data (for computational efficiency)
+    n_background = min(n_background, len(X_train))
+    background_indices = np.random.choice(len(X_train), n_background, replace=False)
+    X_background = X_train[background_indices]
+    
+    # Sample test data to explain
+    n_explain = min(n_explain, len(X_test))
+    X_explain = X_test[:n_explain]
+    
+    # Create SHAP explainer
+    explainer = shap.KernelExplainer(model.predict_proba, X_background)
+    
+    # Compute SHAP values
+    shap_values = explainer.shap_values(X_explain)
+    
+    results = {
+        'shap_values': shap_values,
+        'explainer': explainer,
+        'feature_names': feature_names,
+        'X_explain': X_explain
+    }
+    
+    # Save plots if requested
+    if save_plots:
+        plot_paths = _save_shap_plots(
+            shap_values=shap_values,
+            X_explain=X_explain,
+            feature_names=feature_names,
+            explainer=explainer,
+            model=model,
+            output_dir=output_dir
+        )
+        results['plot_paths'] = plot_paths
+    
+    return results
+
+def _save_shap_plots(
+    shap_values,
+    X_explain: np.ndarray,
+    feature_names: list,
+    explainer,
+    model,
+    output_dir: str
+) -> dict:
+    """Internal function to save SHAP visualization plots."""
+    
+    output_path = Path(output_dir)
+    output_path.mkdir(parents=True, exist_ok=True)
+    
+    plot_paths = {}
+    X_explain_df = pd.DataFrame(X_explain, columns=feature_names)
+
+    # Plot Feature Importance
+    """
+        Shows which properties matter most for classifying wines overall.
+        Longer bars mean the feature has bigger impact on predictions across all three wine types.
+        Colors show whether high or low values of each feature push predictions toward specific wine classes.
+        SHAP value ->  "If I remove this feature, how much does my prediction change?" 
+        averaged across all possible feature combinations.
+    """
+    plt.figure(figsize=(10, 8))
+    shap.summary_plot(shap_values, X_explain_df, plot_type="bar", show=False)
+    plt.xlabel("Mean absolute SHAP value", fontsize=12)
+    plt.title("Feature Importance Ranking", fontsize=14, pad=20)
+    importance_path = output_path / "shap_feature_importance.png"
+    plt.savefig(importance_path, bbox_inches='tight', dpi=150)
+    plt.close()
+    plot_paths['importance'] = str(importance_path)
+    
+    return plot_paths

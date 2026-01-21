@@ -10,6 +10,7 @@ from ml_ops_59.data import data_loader
 from ml_ops_59.evaluate import compute_confusion_matrix, compute_metrics
 from ml_ops_59.model import create_model
 from ml_ops_59.visualize import plot_confusion_matrix
+from ml_ops_59.visualize import generate_shap_explanations
 from ml_ops_59.wandb_logger import WandBLogger
 
 """
@@ -44,6 +45,8 @@ def train(n_neighbors: int = 5, test_size: float = 0.2, seed: int = 42) -> float
     preds = model.predict(X_test)
     acc = accuracy_score(y_test, preds)
 
+    generate_shap_explanations(model, X_train, X_test, X.columns.tolist())
+
     return float(acc)
 
 
@@ -56,8 +59,6 @@ def train_hydra(cfg: DictConfig):
     )
 
     print(f"Validation Accuracy: {acc:.4f}")
-    print(f"Model: KNN with K={cfg.model.n_neighbors}")
-    print(f"Test size: {cfg.data.test_size}, Seed: {cfg.data.seed}")
 
     return acc
 

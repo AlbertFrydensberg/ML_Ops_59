@@ -1,0 +1,14 @@
+model:
+  n_neighbors: 5
+data:
+  test_size: 0.2
+  seed: 42
+wandb:
+  project_name: MLops_59
+  enabled: true
+training:
+  num_classes: 3
+  class_names:
+  - 1
+  - 2
+  - 3
