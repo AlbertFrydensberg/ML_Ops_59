@@ -12,12 +12,12 @@ from sklearn.metrics import accuracy_score
 from sklearn.model_selection import StratifiedKFold, train_test_split
 from sklearn.preprocessing import StandardScaler
 
+from ml_ops_59.artifacts import save_artifacts
 from ml_ops_59.data import data_loader
 from ml_ops_59.evaluate import compute_confusion_matrix, compute_metrics
 from ml_ops_59.model import create_model
 from ml_ops_59.visualize import generate_shap_explanations, plot_confusion_matrix
 from ml_ops_59.wandb_logger import WandBLogger
-from ml_ops_59.artifacts import save_artifacts
 
 
 def train_single(
