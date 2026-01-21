@@ -178,3 +178,4 @@ cython_debug/
 coverage.xml
 
 data/
+/data
