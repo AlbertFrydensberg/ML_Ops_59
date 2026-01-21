@@ -2,8 +2,11 @@
 
 from __future__ import annotations
 
+import os
+
 import hydra
 import numpy as np
+from hydra.utils import to_absolute_path
 from omegaconf import DictConfig
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import StratifiedKFold, train_test_split
@@ -181,12 +184,18 @@ def sweep_trial_impl(cfg: DictConfig) -> float:
 
     class_names = cfg.training.class_names
     confusion = compute_confusion_matrix(y, oof_preds, class_names=class_names)
-    plot_confusion_matrix(confusion, class_names, "confusion_matrix.png")
 
-    wandb_logger.log_image("confusion_matrix", "confusion_matrix.png")
+    # Resolve path relative to project root (not Hydra run dir)
+    out_path = to_absolute_path(os.path.join("reports", "figures", "confusion_matrix.png"))
+    os.makedirs(os.path.dirname(out_path), exist_ok=True)
+
+    # Save + log confusion matrix
+    plot_confusion_matrix(confusion, class_names, out_path)
+    wandb_logger.log_image("confusion_matrix", out_path)
     wandb_logger.log_confusion_matrix(y, oof_preds, class_names)
 
     wandb_logger.finish()
+
     return acc_mean
 
 
