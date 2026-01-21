@@ -19,7 +19,7 @@ def test_create_model_is_knn():
 
 def test_train_returns_valid_accuracy():
     "We expect an accuracy between 0 and 1."
-    acc = train(n_neighbors=5, test_size=0.2, seed=42)
+    acc = train_single(n_neighbors=5, test_size=0.2, seed=42)
 
     assert isinstance(acc, float) or isinstance(acc, np.floating)
     assert 0.0 <= acc <= 1.0
