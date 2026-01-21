@@ -148,7 +148,7 @@ will check the repositories and the code to verify your answers.
 >
 > Answer:
 
---- We used the third-party framework scikit.learn as well as matplotlib, both of which are not covered in the course. scikit.learn is used to build a supervised machine learning classifier using the K-Nearest Neighbors (KNN) algorithm. The approach is chosen to have a relatively simple model we can ensure works in order to keep the focus on designing and implementing an end-to-end MLOps pipeline, which is the primary objective of this project. matplotlib ---
+--- We used the third-party framework SHAP. It was integrated by adding one function call after model training, which is defined in visualize.py. It uses KernelExplainer to analyze how each wine chemical property (alcohol, flavanoids, etc.) affects KNN predictions across all three wine classes. The implementation generates a ranking showing overall feature importance. This makes sense for your MLOps project because it provides model interpretability — understanding why the model classifies wines helps validate the model works correctly and identifies which chemical measurements matter most for wine classification. Other than SHAP we used scikit.learn as well as matplotlib. scikit.learn is used to build a supervised machine learning classifier using the K-Nearest Neighbors (KNN) algorithm. The approach is chosen to have a relatively simple model we can ensure works in order to keep the focus on designing and implementing an end-to-end MLOps pipeline, which is the primary objective of this project. matplotlib is used to create static visualizations and plots. ---
 
 ## Coding environment
 
