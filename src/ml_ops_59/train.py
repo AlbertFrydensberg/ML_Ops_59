@@ -2,8 +2,8 @@
 
 from __future__ import annotations
 
-import numpy as np
 import hydra
+import numpy as np
 from omegaconf import DictConfig
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import StratifiedKFold, train_test_split
@@ -12,7 +12,7 @@ from sklearn.preprocessing import StandardScaler
 from ml_ops_59.data import data_loader
 from ml_ops_59.evaluate import compute_confusion_matrix, compute_metrics
 from ml_ops_59.model import create_model
-from ml_ops_59.visualize import plot_confusion_matrix
+from ml_ops_59.visualize import generate_shap_explanations, plot_confusion_matrix
 from ml_ops_59.wandb_logger import WandBLogger
 
 
@@ -50,6 +50,18 @@ def train_single(
 
     preds = model.predict(X_test)
     acc = accuracy_score(y_test, preds)
+
+    # SHAP
+    generate_shap_explanations(
+        model=model,
+        X_train=X_train,
+        X_test=X_test,
+        feature_names=X.columns.tolist(),
+        n_background=50,
+        n_explain=10,
+        output_dir="reports/figures"
+    )
+
     return float(acc)
 
 
