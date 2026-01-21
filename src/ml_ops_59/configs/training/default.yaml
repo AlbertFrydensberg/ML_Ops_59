@@ -1,3 +1,4 @@
 cv_folds: 5
 num_classes: 3
 class_names: [1, 2, 3]
+enable_shap: false
