@@ -3,16 +3,15 @@ Utility functions for evaluation and visualization
 Including accuracy computation, confusion matrix, and plotting
 """
 
+import logging
+import warnings
+from pathlib import Path
 from typing import Optional, Union
 
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import shap
-from pathlib import Path
-import warnings
-import logging
-
 
 
 def plot_confusion_matrix(
