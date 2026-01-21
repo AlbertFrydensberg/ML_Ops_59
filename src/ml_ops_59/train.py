@@ -17,6 +17,7 @@ from ml_ops_59.evaluate import compute_confusion_matrix, compute_metrics
 from ml_ops_59.model import create_model
 from ml_ops_59.visualize import generate_shap_explanations, plot_confusion_matrix
 from ml_ops_59.wandb_logger import WandBLogger
+from ml_ops_59.artifacts import save_artifacts
 
 
 def train_single(
@@ -50,6 +51,10 @@ def train_single(
 
     model = create_model(n_neighbors=n_neighbors, weights=weights, p=p)
     model.fit(X_train, y_train)
+
+    # Save artifacts
+    feature_names = list(X.columns)  # IMPORTANT: preserves the expected input order
+    save_artifacts(model=model, scaler=scaler, feature_names=feature_names)
 
     preds = model.predict(X_test)
     acc = accuracy_score(y_test, preds)
