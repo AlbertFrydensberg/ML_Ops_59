@@ -29,9 +29,7 @@ def save_artifacts(
 
     joblib.dump(model, out_dir / "knn_model.joblib")
     joblib.dump(scaler, out_dir / "scaler.joblib")
-    (out_dir / "metadata.json").write_text(
-        json.dumps({"feature_names": feature_names}, indent=2)
-    )
+    (out_dir / "metadata.json").write_text(json.dumps({"feature_names": feature_names}, indent=2))
 
 
 def load_artifacts(
