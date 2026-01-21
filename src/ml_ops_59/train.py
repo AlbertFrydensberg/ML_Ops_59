@@ -13,7 +13,6 @@ from ml_ops_59.data import data_loader
 from ml_ops_59.evaluate import compute_confusion_matrix, compute_metrics
 from ml_ops_59.model import create_model
 from ml_ops_59.visualize import plot_confusion_matrix
-from ml_ops_59.visualize import generate_shap_explanations
 from ml_ops_59.wandb_logger import WandBLogger
 
 
@@ -51,38 +50,27 @@ def train_single(
 
     preds = model.predict(X_test)
     acc = accuracy_score(y_test, preds)
-
     return float(acc)
 
 
-@hydra.main(config_path="../../configs", config_name="config", version_base=None)
-def train_hydra(cfg: DictConfig):
-    acc = train(
-        n_neighbors=cfg.model.n_neighbors,
-        test_size=cfg.data.test_size,
-        seed=cfg.data.seed,
+def sweep_trial_impl(cfg: DictConfig) -> float:
+    """
+    One W&B sweep trial:
+    Stratified K-Fold CV and logs mean/std metrics + confusion matrix from OOF preds.
+    """
+    # Initialize WandB logger (it will reuse wandb.run if already created by agent)
+    wandb_logger = WandBLogger(
+        project_name=cfg.wandb.project_name,
+        enabled=cfg.wandb.enabled,
+        config={
+            # seed Hydra defaults into W&B config (sweep overrides still work)
+            "K": cfg.model.n_neighbors,
+            "weights": cfg.model.weights,
+            "p": cfg.model.p,
+            "cv_folds": cfg.training.cv_folds,
+            "seed": cfg.data.seed,
+        },
     )
-
-    print(f"Validation Accuracy: {acc:.4f}")
-    print(f"Model: KNN with K={cfg.model.n_neighbors}")
-    print(f"Test size: {cfg.data.test_size}, Seed: {cfg.data.seed}")
-
-    return acc
-
-
-"""
-One WandB sweep trial (called by wandb.agent)
-"""
-
-
-@hydra.main(config_path="../../configs", config_name="config", version_base=None)
-def sweep_trial(cfg: DictConfig):
-    """
-    One WandB sweep trial (called by wandb.agent)
-    Does Stratified K-Fold CV and logs mean/std metrics + confusion matrix from OOF preds.
-    W&B will override cfg.model.n_neighbors with sweep values
-    """
-    wandb_logger = WandBLogger(project_name=cfg.wandb.project_name, enabled=cfg.wandb.enabled)
 
     wandb_config = wandb_logger.config
     k = int(wandb_config.get("K", cfg.model.n_neighbors))
