@@ -59,7 +59,7 @@ def train_single(
         feature_names=X.columns.tolist(),
         n_background=50,
         n_explain=10,
-        output_dir="reports/figures"
+        output_dir="reports/figures",
     )
 
     return float(acc)
