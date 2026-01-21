@@ -1,7 +1,7 @@
 import numpy as np
 from ml_ops_59.data import data_loader
 from ml_ops_59.model import create_model
-from ml_ops_59.train import train
+from ml_ops_59.train import train_single
 from sklearn.dummy import DummyClassifier
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
@@ -26,8 +26,8 @@ def test_train_returns_valid_accuracy():
 
 
 def test_train_reproducible_with_same_seed():
-    acc1 = train(n_neighbors=5, test_size=0.2, seed=42)
-    acc2 = train(n_neighbors=5, test_size=0.2, seed=42)
+    acc1 = train_single(n_neighbors=5, test_size=0.2, seed=42)
+    acc2 = train_single(n_neighbors=5, test_size=0.2, seed=42)
 
     # accuracy should match exactly ....
     assert np.isclose(acc1, acc2), f"Acc not reproducible: {acc1} vs {acc2}"
