@@ -20,8 +20,8 @@ def train_single(
     n_neighbors: int,
     test_size: float,
     seed: int,
-    weights: str,
-    p: int,
+    weights: str = 'uniform',     
+    p: int = 2, 
     stratify: bool = True,
 ) -> float:
     """Fast single split run (sanity check / quick dev loop)."""
