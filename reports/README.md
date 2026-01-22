@@ -62,7 +62,7 @@ will check the repositories and the code to verify your answers.
     are using (M2+M6)
 * [x] Remember to comply with good coding practices (`pep8`) while doing the project (M7)
 * [x] Do a bit of code typing and remember to document essential parts of your code (M7)
-* [ ] Setup version control for your data or part of your data (M8)
+* [x] Setup version control for your data or part of your data (M8)
 * [x] Add command line interfaces and project commands to your code where it makes sense (M9)
 * [x] Construct one or multiple docker files for your code (M10)
 * [x] Build the docker files locally and make sure they work as intended (M10)
@@ -85,9 +85,9 @@ will check the repositories and the code to verify your answers.
 * [x] Add pre-commit hooks to your version control setup (M18)
 * [ ] Add a continues workflow that triggers when data changes (M19)
 * [ ] Add a continues workflow that triggers when changes to the model registry is made (M19)
-* [ ] Create a data storage in GCP Bucket for your data and link this with your data version control setup (M21)
+* [x] Create a data storage in GCP Bucket for your data and link this with your data version control setup (M21)
 * [ ] Create a trigger workflow for automatically building your docker images (M21)
-* [ ] Get your model training in GCP using either the Engine or Vertex AI (M21)
+* [x] Get your model training in GCP using either the Engine or Vertex AI (M21)
 * [ ] Create a FastAPI application that can do inference using your model (M22)
 * [ ] Deploy your model in GCP using either Functions or Run as the backend (M23)
 * [ ] Write API tests for your application and setup continues integration for these (M24)
@@ -380,7 +380,7 @@ wandb agent <our-sweep-id> ---
 >
 > Answer:
 
---- question 17 fill here ---
+GCS was used to store datasets and experiment artefacts. The storage bucket served as a central, versioned data backend, integrated with DVC, allowing data to be shared consistently between local development and cloud-based compute resources. Compute Engine was used for model training. By creating CPU-based VMs, training could be executed on scalable cloud hardware without being limited by local resources. This allowed experiments to run for longer durations and with higher compute capacity when needed. Cloud Run was used to deploy a FastAPI application. Cloud Run provides a fully managed, serverless environment for running containerised web services, enabling the FastAPI backend to be deployed with automatic scaling and without manual infrastructure management.
 
 ### Question 18
 
@@ -395,7 +395,7 @@ wandb agent <our-sweep-id> ---
 >
 > Answer:
 
---- question 18 fill here ---
+We used the compute engine to run our KNN training with the CPU-based VMs, training could be executed on scalable cloud hardware without being limited by local resources. This allowed experiments to run for longer durations and with higher compute capacity although the higher capacity is not really needed for this project it is nice to know how to manage training when scaling.
 
 ### Question 19
 
@@ -437,7 +437,7 @@ wandb agent <our-sweep-id> ---
 >
 > Answer:
 
---- question 22 fill here ---
+--- Yes, the model was successfully trained in the cloud using Google Compute Engine. A virtual machine was created with a standard Ubuntu image and CPU resources, which was sufficient for the KNN model used in the project. Compute Engine was chosen because it provides a simple and transparent way to scale training while maintaining full control over the execution environment. After creating the VM, it was accessed via SSH and configured in the same way as the local development environment. The project repository was cloned from GitHub, dependencies were installed using the uv package manager to ensure environment reproducibility, and the dataset was downloaded from Google Cloud Storage using DVC. Training was then executed by running the existing training script directly on the VM. ---
 
 ## Deployment
 
