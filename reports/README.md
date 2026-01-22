@@ -83,14 +83,14 @@ will check the repositories and the code to verify your answers.
 * [x] Add caching and multi-os/python/pytorch testing to your continuous integration (M17)
 * [x] Add a linting step to your continuous integration (M17)
 * [x] Add pre-commit hooks to your version control setup (M18)
-* [x] Add a continues workflow that triggers when data changes (M19)
-* [x] Add a continues workflow that triggers when changes to the model registry is made (M19)
+* [ ] Add a continues workflow that triggers when data changes (M19)
+* [ ] Add a continues workflow that triggers when changes to the model registry is made (M19)
 * [x] Create a data storage in GCP Bucket for your data and link this with your data version control setup (M21)
 * [ ] Create a trigger workflow for automatically building your docker images (M21)
 * [x] Get your model training in GCP using either the Engine or Vertex AI (M21)
 * [x] Create a FastAPI application that can do inference using your model (M22)
 * [ ] Deploy your model in GCP using either Functions or Run as the backend (M23)
-* [x] Write API tests for your application and setup continues integration for these (M24)
+* [ ] Write API tests for your application and setup continues integration for these (M24)
 * [ ] Load test your application (M24)
 * [ ] Create a more specialized ML-deployment API using either ONNX or BentoML, or both (M25)
 * [ ] Create a frontend for your API (M26)
@@ -283,7 +283,7 @@ will check the repositories and the code to verify your answers.
 
 --- We have organized our continuous integration into multiple GitHub Actions workflows, each responsible for a specific aspect of quality assurance and automation. One workflow focuses on code quality, where we run linting and formatting checks using Ruff to ensure consistent style and catch common programming errors. Another workflow is responsible for running unit tests, where we execute the test suite using pytest. This workflow validates the correctness of core functionality such as data loading, model training, evaluation logic. We run the same checks on multiple operating systems ubuntu, windows, and macos-latest and a fixed Python version. This helps ensure that the project behaves consistently across different environments.Anexample of a triggered workflow can be seen here:https://github.com/AlbertFrydensberg/ML_Ops_59/actions/runs/21249105272
 We also have an example where the workflows fails here:https://github.com/AlbertFrydensberg/ML_Ops_59/actions/runs/21245542513
-in this case we can see where the error occurs and fix it. 
+in this case we can see where the error occurs and fix it. ---
 
 ## Running code and tracking experiments
 
@@ -350,7 +350,7 @@ wandb agent <our-sweep-id> ---
 >
 > Answer:
 
---- We developed two Docker images: one for training and one for API deployment. Both Dockerfiles use the `ghcr.io/astral-sh/uv:python3.12-bookworm-slim` base image for fast dependency management with uv, and implement cache mounting for faster rebuilds, as shown in the guide. We separated these into two distinct Dockerfiles because they serve different purposes. The training container runs batch jobs to train models and needs write access to save checkpoints. The API container runs continuously as a web service to serve predictions to users. It uses unicorn for web acess. We initially considered creating a separate evaluation Dockerfile, but since evaluation is already integrated into our training pipeline (train.py), a separate container would be redundant. This is something we'll be aware of in future cases. All Dockerfiles use the `ghcr.io/astral-sh/uv:python3.12-bookworm-slim` base image for fast dependency management with uv. To run the training docker image: `docker run --rm train:latest` Link to docker file for training: <https://github.com/AlbertFrydensberg/ML_Ops_59/blob/main/dockerfiles/train.dockerfile> ---
+---  We developed two Docker images: one for training and one for API deployment. Both Dockerfiles use the `ghcr.io/astral-sh/uv:python3.12-bookworm-slim` base image for fast dependency management with uv, and implement cache mounting for faster rebuilds, as shown in the guide. We separated these into two distinct Dockerfiles because they serve different purposes. The training container runs batch jobs to train models and needs write access to save checkpoints. The API container runs continuously as a web service to serve predictions to users. It uses unicorn for web acess. We initially considered creating a separate evaluation Dockerfile, but since evaluation is already integrated into our training pipeline (train.py), a separate container would be redundant. This is something we'll be aware of in future cases. All Dockerfiles use the `ghcr.io/astral-sh/uv:python3.12-bookworm-slim` base image for fast dependency management with uv. To run the training docker image: `docker run --rm train:latest` Link to docker file for training: <https://github.com/AlbertFrydensberg/ML_Ops_59/blob/main/dockerfiles/train.dockerfile>  ---
 
 ### Question 16
 
@@ -568,7 +568,7 @@ We used the compute engine to run our KNN training with the CPU-based VMs, train
 >
 > Answer:
 
---- question 30 fill here ---
+--- One of the biggest struggles in the project was related to collaboration and version control practices. At several points, multiple group members worked directly on the same files on the main branch instead of using separate feature branches. This occasionally led to merge conflicts, some of which failed or required manual resolution. These conflicts were time-consuming and sometimes resulted in accidental overwrites or the need to reapply changes. We overcame this challenge by better communication, making sure that we were not working on the same at the same time. For future projects it would be a good idea to have a more stric branching discipline. Another major challenge in the project was integrating cloud storage using DVC. This step took a significant amount of time to implement, as understanding the underlying concepts of cloud storage buckets and configuring them correctly in Google Cloud proved difficult. In particular, setting up the remote storage, managing credentials, and ensuring that DVC could reliably push and pull data from the cloud required several iterations before it worked as expected. To be honest we just kept trying untill it worked .  ---
 
 ### Question 31
 
