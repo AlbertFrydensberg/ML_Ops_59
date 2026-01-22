@@ -21,7 +21,6 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 
 # Copy application code
 COPY src/ src/
-COPY data/ data/
 
-# Set the entrypoint for training
-ENTRYPOINT ["uv", "run", "src/ml_ops_59/train.py"]
+# Set the entrypoint for evaluation
+ENTRYPOINT ["uv", "run", "src/ml_ops_59/evaluate.py"]

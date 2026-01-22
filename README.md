@@ -28,71 +28,52 @@ Wine classification project with a standardized MLOps structure
 
 The directory structure of the project looks like this:
 ```txt
-.
-├── .github/                      # GitHub Actions & Dependabot
+├── .github/                  # Github actions and dependabot
 │   ├── dependabot.yaml
 │   └── workflows/
 │       └── tests.yaml
-
-├── data/                         # Datasets
-│   ├── raw/                      # Original, immutable data
-│   └── processed/                # Cleaned / feature-engineered data
-
-├── dockerfiles/                  # Docker build definitions
+├── configs/                  # Configuration files
+│   ├── config.yaml
+│   ├── sweep.yaml
+├── data/                     # Data directory
+│   ├── processed
+│   └── raw
+├── dockerfiles/              # Dockerfiles
 │   ├── api.Dockerfile
 │   └── train.Dockerfile
-
-├── docs/                         # Project documentation
+├── docs/                     # Documentation (added later?)
 │   ├── mkdocs.yml
 │   └── source/
 │       └── index.md
-
-├── models/                       # Trained and serialized models
-
-├── notebooks/                    # Jupyter notebooks (EDA, experiments)
-
-├── outputs/                      # Generated outputs (predictions, artifacts)
-
-├── reports/                      # Reports and visualizations
-│   └── figures/                  # Generated plots and figures
-
-├── src/                          # Source code
-│   └── project_name/
-│       ├── __init__.py
-│       ├── api.py                # API entrypoints
-│       ├── cli.py                # Command-line interface
-│       ├── data.py               # Data loading & preprocessing
-│       ├── evaluate.py           # Model evaluation
-│       ├── model.py              # Model definitions
-│       ├── sweep_entry.py        # Hyperparameter sweep entrypoint
-│       ├── train.py              # Training logic
-│       ├── visualize.py          # Visualization utilities
-│       ├── wandb_logger.py       # Weights & Biases logging
-│       │
-│       └── configs/              # Configuration files
-│           ├── data/
-│           │   └── wine.yaml
-│           ├── model/
-│           │   └── knn.yaml
-│           ├── training/
-│           │   └── default.yaml
-│           ├── wandb/
-│           │   └── default.yaml
-│           └── config.yaml       # Global configuration using Hydra
-
-├── tests/                        # Unit & integration tests
+├── models/                   # Trained models
+├── notebooks/                # Jupyter notebooks
+├── outputs/                  # What is this used for?
+├── reports/                  # Reports
+│   └── figures/              
+├── src/                      # Source code
+│   ├── project_name/
+│   │   ├── __init__.py
+│   │   ├── api.py
+│   │   ├── cli.py
+│   │   ├── data.py
+│   │   ├── evaluate.py
+│   │   ├── model.py
+│   │   ├── sweep_entry.py
+│   │   ├── train.py
+|   |   ├── visualize.py
+│   │   └── wandb_logger.py
+└── tests/                    # Tests
 │   ├── __init__.py
 │   ├── test_api.py
 │   ├── test_data.py
 │   └── test_model.py
-
 ├── .gitignore
 ├── .pre-commit-config.yaml
 ├── LICENSE
-├── pyproject.toml                # Python project metadata & dependencies
-├── README.md                     # Project overview
-└── tasks.py                      # Project automation tasks
-
+├── pyproject.toml            # Python project file
+├── README.md                 # Project README
+└── tasks.py                  # Project tasks
+```
 
 
 Created using [mlops_template](https://github.com/SkafteNicki/mlops_template),

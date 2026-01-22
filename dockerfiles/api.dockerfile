@@ -21,7 +21,15 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 
 # Copy application code
 COPY src/ src/
-COPY data/ data/
+COPY models/ models/
 
-# Set the entrypoint for training
-ENTRYPOINT ["uv", "run", "src/ml_ops_59/train.py"]
+# Set environment variables
+ENV PYTHONUNBUFFERED=1 \
+    HOST=0.0.0.0 \
+    PORT=8000
+
+# Expose the API port
+EXPOSE 8000
+
+# Run the FastAPI application with uvicorn
+ENTRYPOINT ["uv", "run", "uvicorn", "ml_ops_59.api:app", "--host", "0.0.0.0", "--port", "8000"]
