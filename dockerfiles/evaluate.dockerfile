@@ -13,6 +13,7 @@ WORKDIR /
 COPY uv.lock uv.lock
 COPY pyproject.toml pyproject.toml
 COPY README.md README.md
+COPY LICENSE LICENSE
 
 # Install dependencies with cache mount for faster rebuilds
 ENV UV_LINK_MODE=copy
