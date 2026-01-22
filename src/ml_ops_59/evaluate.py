@@ -68,4 +68,3 @@ def compute_metrics(y_true: np.ndarray, y_pred: np.ndarray, num_classes: int) ->
         "avg_recall": np.mean(recall),
         "avg_f1": np.mean(f1),
     }
-
