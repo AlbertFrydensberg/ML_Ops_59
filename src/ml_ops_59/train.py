@@ -12,6 +12,7 @@ from sklearn.metrics import accuracy_score
 from sklearn.model_selection import StratifiedKFold, train_test_split
 from sklearn.preprocessing import StandardScaler
 
+from ml_ops_59.artifacts import save_artifacts
 from ml_ops_59.data import data_loader
 from ml_ops_59.evaluate import compute_confusion_matrix, compute_metrics
 from ml_ops_59.model import create_model
@@ -50,6 +51,10 @@ def train_single(
 
     model = create_model(n_neighbors=n_neighbors, weights=weights, p=p)
     model.fit(X_train, y_train)
+
+    # Save artifacts
+    feature_names = list(X.columns)  # IMPORTANT: preserves the expected input order
+    save_artifacts(model=model, scaler=scaler, feature_names=feature_names)
 
     preds = model.predict(X_test)
     acc = accuracy_score(y_test, preds)
