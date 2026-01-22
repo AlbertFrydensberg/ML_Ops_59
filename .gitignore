@@ -140,6 +140,11 @@ celerybeat.pid
 outputs/
 multirun/
 
+# saved models and metadata
+models/*.joblib
+models/metadata.json
+!models/.gitkeep
+
 # Environments
 .env
 .venv
