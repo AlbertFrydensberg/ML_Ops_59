@@ -1,19 +1,29 @@
 from __future__ import annotations
 
+from contextlib import asynccontextmanager
 from typing import Dict, List, Union
 
 import numpy as np
+import pandas as pd
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, Field
 
 from ml_ops_59.artifacts import load_artifacts
 
-app = FastAPI(title="ml_ops_59 wine classifier", version="0.1.0")
-
 # Loaded on startup
 MODEL = None
 SCALER = None
 FEATURE_NAMES: List[str] = []
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    global MODEL, SCALER, FEATURE_NAMES
+    MODEL, SCALER, FEATURE_NAMES = load_artifacts()
+    yield
+
+
+app = FastAPI(title="ml_ops_59 wine classifier", version="0.1.0", lifespan=lifespan)
 
 
 class PredictRequest(BaseModel):
@@ -31,12 +41,6 @@ class PredictBatchRequest(BaseModel):
         ...,
         description="Batch of inputs (each either list or dict).",
     )
-
-
-@app.on_event("startup")
-def _load() -> None:
-    global MODEL, SCALER, FEATURE_NAMES
-    MODEL, SCALER, FEATURE_NAMES = load_artifacts()
 
 
 @app.get("/health")
@@ -83,7 +87,8 @@ def predict(req: PredictRequest):
         raise HTTPException(status_code=500, detail="Model not loaded.")
 
     row = _to_row(req.x).reshape(1, -1)
-    row_scaled = SCALER.transform(row)
+    row_df = pd.DataFrame(row, columns=FEATURE_NAMES)
+    row_scaled = SCALER.transform(row_df)
     pred = MODEL.predict(row_scaled)[0]
 
     # dataset target is 1-3 in many wine variants; return as string per requirement
@@ -96,6 +101,7 @@ def predict_batch(req: PredictBatchRequest):
         raise HTTPException(status_code=500, detail="Model not loaded.")
 
     rows = np.vstack([_to_row(x) for x in req.xs])
-    rows_scaled = SCALER.transform(rows)
+    rows_df = pd.DataFrame(rows, columns=FEATURE_NAMES)
+    rows_scaled = SCALER.transform(rows_df)
     preds = MODEL.predict(rows_scaled)
     return {"predicted_classes": [str(p) for p in preds]}

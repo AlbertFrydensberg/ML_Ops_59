@@ -136,6 +136,15 @@ celerybeat.pid
 # SageMath parsed files
 *.sage.py
 
+# Hydra outputs
+outputs/
+multirun/
+
+# saved models and metadata
+models/*.joblib
+models/metadata.json
+!models/.gitkeep
+
 # Environments
 .env
 .venv

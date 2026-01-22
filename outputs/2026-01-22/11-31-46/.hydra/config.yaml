@@ -1,0 +1,21 @@
+model:
+  n_neighbors: 9
+  weights: uniform
+  p: 2
+data:
+  test_size: 0.2
+  seed: 42
+  stratify: true
+training:
+  cv_folds: 5
+  num_classes: 3
+  class_names:
+  - 1
+  - 2
+  - 3
+  enable_shap: false
+wandb:
+  project_name: MLops_59
+  enabled: true
+  mode: online
+task: train
