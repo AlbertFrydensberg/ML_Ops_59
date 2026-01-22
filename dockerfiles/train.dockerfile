@@ -23,6 +23,5 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 # Copy application code
 COPY src/ src/
 
-
 # Set the entrypoint for training
 ENTRYPOINT ["uv", "run", "python", "src/ml_ops_59/train.py"]

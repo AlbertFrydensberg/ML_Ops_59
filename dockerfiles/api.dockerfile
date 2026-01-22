@@ -59,13 +59,12 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 COPY src/ src/
 COPY models/ models/
 
-# Set environment variables
+# Environment variables
 ENV PYTHONUNBUFFERED=1 \
-    HOST=0.0.0.0 \
+    HOST=127.0.0.1 \
     PORT=8000
-
 # Expose the API port
 EXPOSE 8000
 
 # Run the FastAPI application with uvicorn
-ENTRYPOINT ["uv", "run", "uvicorn", "ml_ops_59.api:app", "--host", "0.0.0.0", "--port", "8000"]
+ENTRYPOINT ["uv", "run", "uvicorn", "ml_ops_59.api:app", "--host", "127.0.0.1", "--port", "8000"]

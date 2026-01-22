@@ -90,7 +90,7 @@ will check the repositories and the code to verify your answers.
 * [x] Get your model training in GCP using either the Engine or Vertex AI (M21)
 * [x] Create a FastAPI application that can do inference using your model (M22)
 * [ ] Deploy your model in GCP using either Functions or Run as the backend (M23)
-* [ ] Write API tests for your application and setup continues integration for these (M24)
+* [x] Write API tests for your application and setup continues integration for these (M24)
 * [ ] Load test your application (M24)
 * [ ] Create a more specialized ML-deployment API using either ONNX or BentoML, or both (M25)
 * [ ] Create a frontend for your API (M26)
@@ -185,7 +185,7 @@ will check the repositories and the code to verify your answers.
 >
 > Answer:
 
---- The project was initialized using the cookiecutter MLOps template. From the cookiecutter template we have filled out the src/ml_ops_59 package with the core machine learning logic, including modules for data loading, model definition, training, evaluation, visualization, . We have deleted the notebooks folder as this was not useful for this particular project. We deviated from the template by adding several components that were not included by default. We added a configs/ folder with Hydra configuration and sweep files. We also added a wandb/ directory and logging utilities for experiment tracking. Additional root-level scripts for dataset statistics, data drift detection, and model registry reporting were introduced---
+--- The project was initialized using the cookiecutter MLOps template. From the cookiecutter template we have filled out the src/ml_ops_59 package with the core machine learning logic, including modules for data loading, model definition, training, evaluation, and visualization. We have deleted the notebooks folder as this was not useful for this particular project. We deviated from the template by adding several components that were not included by default. We added a configs/ folder with Hydra configuration and sweep files. We also added a wandb/ directory and logging utilities for experiment tracking. Additional root-level scripts for dataset statistics, data drift detection, and model registry reporting were introduced---
 
 ### Question 6
 
@@ -234,7 +234,7 @@ will check the repositories and the code to verify your answers.
 >
 > Answer:
 
---- Total code coverage so far is 29%. We would not trust that our code is error free with a coverage of 100% because the testings have to be clever and well thought for it to be error free. We cannot predict every error that we run into so there will naturally be some ongoing debugging/error solving as we execute the code. ---
+--- Total code coverage is around 46%. We would not trust that our code is error free with a coverage of 100% because the testings have to be clever and well thought for it to be error free. We cannot predict every error that we run into so there will naturally be some ongoing debugging/error solving as we execute the code.  Coverage only tells us that lines were executed during tests, not that the tests contain strong assertions or validate the right behavior. It is possible to reach high coverage with weak tests that do not catch logical errors. Thus, even with high coverage we can not be sure the code is fully operatable---
 
 ### Question 9
 
@@ -249,7 +249,7 @@ will check the repositories and the code to verify your answers.
 >
 > Answer:
 
---- Branches and pull requests were not used in this project, as development was done directly on the main branch- This is also because our group was working close together in the project so we could ealisy align the work being done. Using branches and pull requests could have improved version control. Branches allow features or fixes to be developed in isolation, while pull requests enable code review and safer integration, reducing the risk of errors and improving collaboration. ---
+--- Branches and pull requests were limited used in this project, as development was done directly on the main branch- This is also because our group was working close together in the project so we could ealisy align the work being done. Using branches and pull requests could have improved version control. Branches allow features or fixes to be developed in isolation, while pull requests enable code review and safer integration, reducing the risk of errors and improving collaboration. Branches and pull request were only used when we implementing workflows that trigges when data and the model changes. ---
 
 ### Question 10
 
@@ -264,7 +264,7 @@ will check the repositories and the code to verify your answers.
 >
 > Answer:
 
---- question 10 fill here ---
+--- Yes, we used DVC for managing data in our project. We configured DVC to store data in Google Cloud Storage buckets. Conceptually DVC improved our project by enabling reproducibility and efficient collaboration. It is smart in its ability to version our datasets alongside our code in Git, permitting us to track exactly which data version was used for each model training run. This can be particularly valuable when debugging model performance issues, as we could easily roll back to previous data versions to identify whether problems stemmed from code changes or data changes. Another smart aspect is that the `.dvc` files stored in Git are lightweight metadata files that point to the actual data in cloud storage, keeping our repository small while maintaining full version control. However our dataset in this case was relatively small and did not change during the project work. It is a feature we will keep in mind for future projects. ---
 
 ### Question 11
 
@@ -281,7 +281,9 @@ will check the repositories and the code to verify your answers.
 >
 > Answer:
 
---- question 11 fill here ---
+--- We have organized our continuous integration into multiple GitHub Actions workflows, each responsible for a specific aspect of quality assurance and automation. One workflow focuses on code quality, where we run linting and formatting checks using Ruff to ensure consistent style and catch common programming errors. Another workflow is responsible for running unit tests, where we execute the test suite using pytest. This workflow validates the correctness of core functionality such as data loading, model training, evaluation logic. We run the same checks on multiple operating systems ubuntu, windows, and macos-latest and a fixed Python version. This helps ensure that the project behaves consistently across different environments.Anexample of a triggered workflow can be seen here:https://github.com/AlbertFrydensberg/ML_Ops_59/actions/runs/21249105272
+We also have an example where the workflows fails here:https://github.com/AlbertFrydensberg/ML_Ops_59/actions/runs/21245542513
+in this case we can see where the error occurs and fix it. ---
 
 ## Running code and tracking experiments
 
@@ -348,7 +350,7 @@ wandb agent <our-sweep-id> ---
 >
 > Answer:
 
---- We developed two Docker images: one for training and one for API deployment. Both Dockerfiles use the `ghcr.io/astral-sh/uv:python3.12-bookworm-slim` base image for fast dependency management with uv, and implement cache mounting for faster rebuilds, as shown in the guide. We separated these into two distinct Dockerfiles because they serve different purposes. The training container runs batch jobs to train models and needs write access to save checkpoints. The API container runs continuously as a web service to serve predictions to users. It uses unicorn for web acess. We initially considered creating a separate evaluation Dockerfile, but since evaluation is already integrated into our training pipeline (train.py), a separate container would be redundant. This is something we'll be aware of in future cases. All Dockerfiles use the `ghcr.io/astral-sh/uv:python3.12-bookworm-slim` base image for fast dependency management with uv. To run the training docker image: `docker run --rm train:latest` Link to docker file for training: <https://github.com/AlbertFrydensberg/ML_Ops_59/blob/main/dockerfiles/train.dockerfile> ---
+---  We developed two Docker images: one for training and one for API deployment. Both Dockerfiles use the `ghcr.io/astral-sh/uv:python3.12-bookworm-slim` base image for fast dependency management with uv, and implement cache mounting for faster rebuilds, as shown in the guide. We separated these into two distinct Dockerfiles because they serve different purposes. The training container runs batch jobs to train models and needs write access to save checkpoints. The API container runs continuously as a web service to serve predictions to users. It uses unicorn for web acess. We initially considered creating a separate evaluation Dockerfile, but since evaluation is already integrated into our training pipeline (train.py), a separate container would be redundant. This is something we'll be aware of in future cases. All Dockerfiles use the `ghcr.io/astral-sh/uv:python3.12-bookworm-slim` base image for fast dependency management with uv. To run the training docker image: `docker run --rm train:latest` Link to docker file for training: <https://github.com/AlbertFrydensberg/ML_Ops_59/blob/main/dockerfiles/train.dockerfile>  ---
 
 ### Question 16
 
@@ -454,7 +456,7 @@ We used the compute engine to run our KNN training with the CPU-based VMs, train
 >
 > Answer:
 
---- question 23 fill here ---
+--- We did manage to write an API for our model. We used FastAPI and implemented the service in api.py with three endpoints: a /health endpoint for a simple status check, and /predict and /predict_batch for single and batch inference. The API loads the trained model artifacts (KNN model + StandardScaler + feature order) once at startup using FastAPI lifespan events, which keeps requests stateless and avoids reloading the model on every call. Inputs are validated with Pydantic schemas, and we allow clients to send either a list of feature values (in the correct order) or a dictionary mapping feature names to values. Before inference we convert inputs into a DataFrame with the expected column names, apply the saved scaler, and return predicted wine classes as strings. We also saved artifacts to a dedicated models/ folder to decouple training from inference and make later deployment easier. The API was developed and tested locally, which allowed us to focus on correctness, reproducibility, and testing rather than deployment complexity. We chose not to deploy the API to the cloud due to time constraints ---
 
 ### Question 24
 
@@ -566,7 +568,7 @@ We used the compute engine to run our KNN training with the CPU-based VMs, train
 >
 > Answer:
 
---- question 30 fill here ---
+--- One of the biggest struggles in the project was related to collaboration and version control practices. At several points, multiple group members worked directly on the same files on the main branch instead of using separate feature branches. This occasionally led to merge conflicts, some of which failed or required manual resolution. These conflicts were time-consuming and sometimes resulted in accidental overwrites or the need to reapply changes. We overcame this challenge by better communication, making sure that we were not working on the same at the same time. For future projects it would be a good idea to have a more stric branching discipline. Another major challenge in the project was integrating cloud storage using DVC. This step took a significant amount of time to implement, as understanding the underlying concepts of cloud storage buckets and configuring them correctly in Google Cloud proved difficult. In particular, setting up the remote storage, managing credentials, and ensuring that DVC could reliably push and pull data from the cloud required several iterations before it worked as expected. To be honest we just kept trying untill it worked .  ---
 
 ### Question 31
 
