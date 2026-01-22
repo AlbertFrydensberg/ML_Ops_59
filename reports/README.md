@@ -200,7 +200,7 @@ will check the repositories and the code to verify your answers.
 >
 > Answer:
 
---- question 6 fill here ---
+--- For linting and formatting, we used Ruff, configured through the project configuration, to enforce PEP 8–compliant formatting, consistent import ordering, removal of unused imports, and detection of common errors such as undefined variables. These checks are automatically executed in our GitHub Actions workflows to ensure code quality is maintained across all contributions. We also experimented with mypy, however it was added too late in the process. These concepts are important in larger project as they help different developers understand each others code, and enshures that it is sat up in the same way. Additionally it is very valuable when you are trying to understand code written by others. While mypy was not implemented, we have tried to add decriptions where it is necessary. We also tried to add type hints, however this is not done consistenly.  ---
 
 ## Version control
 
@@ -348,7 +348,7 @@ wandb agent <our-sweep-id> ---
 >
 > Answer:
 
---- question 15 fill here ---
+--- For this project we developed three docker files: One for training, one for evaluation and one for API deployment. We separated these into three distinct Dockerfiles because they serve different purposes and have different lifecycles. The training container runs batch jobs to train models and needs write access to save checkpoints. The evaluation container runs inference on test data and only requires read access to trained models. The API container runs continuously as a web service to serve predictions to users. All Dockerfiles use the `ghcr.io/astral-sh/uv:python3.12-bookworm-slim` base image for fast dependency management with uv. To run the training docker image: `docker run --rm train:latest` Link to docker file for training: <https://github.com/AlbertFrydensberg/ML_Ops_59/blob/main/dockerfiles/train.dockerfile> ---
 
 ### Question 16
 

@@ -13,6 +13,7 @@ WORKDIR /
 COPY uv.lock uv.lock
 COPY pyproject.toml pyproject.toml
 COPY README.md README.md
+COPY LICENSE LICENSE
 
 # Install dependencies with cache mount for faster rebuilds
 ENV UV_LINK_MODE=copy
@@ -21,6 +22,7 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 
 # Copy application code
 COPY src/ src/
+COPY models/ models/
 
 # Set the entrypoint for evaluation
 ENTRYPOINT ["uv", "run", "src/ml_ops_59/evaluate.py"]
