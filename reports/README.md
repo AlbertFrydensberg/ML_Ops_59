@@ -90,7 +90,7 @@ will check the repositories and the code to verify your answers.
 * [x] Get your model training in GCP using either the Engine or Vertex AI (M21)
 * [x] Create a FastAPI application that can do inference using your model (M22)
 * [ ] Deploy your model in GCP using either Functions or Run as the backend (M23)
-* [ ] Write API tests for your application and setup continues integration for these (M24)
+* [x] Write API tests for your application and setup continues integration for these (M24)
 * [ ] Load test your application (M24)
 * [ ] Create a more specialized ML-deployment API using either ONNX or BentoML, or both (M25)
 * [ ] Create a frontend for your API (M26)
@@ -185,7 +185,7 @@ will check the repositories and the code to verify your answers.
 >
 > Answer:
 
---- The project was initialized using the cookiecutter MLOps template. From the cookiecutter template we have filled out the src/ml_ops_59 package with the core machine learning logic, including modules for data loading, model definition, training, evaluation, visualization, . We have deleted the notebooks folder as this was not useful for this particular project. We deviated from the template by adding several components that were not included by default. We added a configs/ folder with Hydra configuration and sweep files. We also added a wandb/ directory and logging utilities for experiment tracking. Additional root-level scripts for dataset statistics, data drift detection, and model registry reporting were introduced---
+--- The project was initialized using the cookiecutter MLOps template. From the cookiecutter template we have filled out the src/ml_ops_59 package with the core machine learning logic, including modules for data loading, model definition, training, evaluation, and visualization. We have deleted the notebooks folder as this was not useful for this particular project. We deviated from the template by adding several components that were not included by default. We added a configs/ folder with Hydra configuration and sweep files. We also added a wandb/ directory and logging utilities for experiment tracking. Additional root-level scripts for dataset statistics, data drift detection, and model registry reporting were introduced---
 
 ### Question 6
 
