@@ -1493,6 +1493,7 @@ wheels = [
 ]
 
 [[package]]
+<<<<<<< HEAD
 name = "httptools"
 version = "0.7.1"
 source = { registry = "https://pypi.org/simple" }
@@ -1522,6 +1523,8 @@ wheels = [
 ]
 
 [[package]]
+=======
+>>>>>>> 49adb1ba792a5c47b37e2bff4e2618762a2f0cbf
 name = "httpx"
 version = "0.28.1"
 source = { registry = "https://pypi.org/simple" }
@@ -2121,11 +2124,14 @@ dependencies = [
     { name = "dvc-gs" },
     { name = "evidently" },
     { name = "fastapi" },
+    { name = "httpx" },
     { name = "hydra-core" },
+    { name = "joblib" },
     { name = "kagglehub" },
     { name = "matplotlib" },
     { name = "numpy" },
     { name = "pandas" },
+    { name = "pytest" },
     { name = "scikit-learn" },
     { name = "seaborn" },
     { name = "shap" },
@@ -2155,11 +2161,14 @@ requires-dist = [
     { name = "dvc-gs", specifier = ">=3.0.2" },
     { name = "evidently", specifier = ">=0.7.20" },
     { name = "fastapi", specifier = "==0.115.6" },
+    { name = "httpx", specifier = ">=0.28.1" },
     { name = "hydra-core", specifier = ">=1.3.2" },
+    { name = "joblib", specifier = ">=1.5.3" },
     { name = "kagglehub" },
     { name = "matplotlib" },
     { name = "numpy", specifier = "==1.26.4" },
     { name = "pandas" },
+    { name = "pytest", specifier = ">=8.3.4" },
     { name = "scikit-learn" },
     { name = "seaborn" },
     { name = "shap" },
