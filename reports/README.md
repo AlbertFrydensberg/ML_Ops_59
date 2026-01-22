@@ -264,7 +264,7 @@ will check the repositories and the code to verify your answers.
 >
 > Answer:
 
---- question 10 fill here ---
+--- Yes, we used DVC for managing data in our project. We configured DVC to store data in Google Cloud Storage buckets. Conceptually DVC improved our project by enabling reproducibility and efficient collaboration. It is smart in its ability to version our datasets alongside our code in Git, permitting us to track exactly which data version was used for each model training run. This can be particularly valuable when debugging model performance issues, as we could easily roll back to previous data versions to identify whether problems stemmed from code changes or data changes. Another smart aspect is that the `.dvc` files stored in Git are lightweight metadata files that point to the actual data in cloud storage, keeping our repository small while maintaining full version control. However our dataset in this case was relatively small and did not change during the project work. It is a feature we will keep in mind for future projects. ---
 
 ### Question 11
 
