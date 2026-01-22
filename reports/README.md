@@ -472,7 +472,16 @@ We used the compute engine to run our KNN training with the CPU-based VMs, train
 >
 > Answer:
 
---- question 24 fill here ---
+--- We did manage to deploy our API locally, but we did not deploy it to the cloud. The API was served locally using FastAPI together with uvicorn as the ASGI server. After training the model and saving the artifacts, we started the service with uv run uvicorn ml_ops_59.api:app, which launched the API on http://localhost:8000. The service could then be invoked either through the automatically generated Swagger UI at /docs or programmatically using tools such as curl.
+
+For example, a prediction could be obtained by sending a POST request to the /predict endpoint with a JSON payload:
+
+curl -X POST http://localhost:8000/predict \
+  -H "Content-Type: application/json" \
+  -d '{"x":[13.2,1.7,2.3,15.6,100,2.8,3.1,0.3,1.9,5.6,1.0,3.2,1000]}'
+
+We chose not to deploy the API to the cloud due to time and scope constraints, and instead focused on ensuring that the local deployment was robust, testable, and reproducible. The API design should make it deployable in cloud.  
+   ---
 
 ### Question 25
 
