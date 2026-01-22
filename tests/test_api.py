@@ -1,11 +1,13 @@
-from pathlib import Path
 import json
+from pathlib import Path
+
 import pytest
 from fastapi.testclient import TestClient
 
 
 def test_health_endpoint():
     from ml_ops_59.api import app
+
     with TestClient(app) as client:
         r = client.get("/health")
 
@@ -31,6 +33,7 @@ def test_predict_endpoint_if_artifacts_exist():
     n_features = len(meta["feature_names"])
 
     from ml_ops_59.api import app
+
     with TestClient(app) as client:
         x = [0.0] * n_features
         r = client.post("/predict", json={"x": x})
