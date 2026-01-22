@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from contextlib import asynccontextmanager
 from typing import Dict, List, Union
 
 import numpy as np
@@ -8,12 +9,20 @@ from pydantic import BaseModel, Field
 
 from ml_ops_59.artifacts import load_artifacts
 
-app = FastAPI(title="ml_ops_59 wine classifier", version="0.1.0")
-
 # Loaded on startup
 MODEL = None
 SCALER = None
 FEATURE_NAMES: List[str] = []
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    global MODEL, SCALER, FEATURE_NAMES
+    MODEL, SCALER, FEATURE_NAMES = load_artifacts()
+    yield
+
+
+app = FastAPI(title="ml_ops_59 wine classifier", version="0.1.0", lifespan=lifespan)
 
 
 class PredictRequest(BaseModel):
@@ -31,12 +40,6 @@ class PredictBatchRequest(BaseModel):
         ...,
         description="Batch of inputs (each either list or dict).",
     )
-
-
-@app.on_event("startup")
-def _load() -> None:
-    global MODEL, SCALER, FEATURE_NAMES
-    MODEL, SCALER, FEATURE_NAMES = load_artifacts()
 
 
 @app.get("/health")
