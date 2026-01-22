@@ -348,7 +348,7 @@ wandb agent <our-sweep-id> ---
 >
 > Answer:
 
---- question 15 fill here ---
+--- For this project we developed three docker files: One for training, one for evaluation and one for API deployment. We separated these into three distinct Dockerfiles because they serve different purposes and have different lifecycles. The training container runs batch jobs to train models and needs write access to save checkpoints. The evaluation container runs inference on test data and only requires read access to trained models. The API container runs continuously as a web service to serve predictions to users. All Dockerfiles use the `ghcr.io/astral-sh/uv:python3.12-bookworm-slim` base image for fast dependency management with uv. To run the training docker image: `docker run --rm train:latest` Link to docker file for training: <https://github.com/AlbertFrydensberg/ML_Ops_59/blob/main/dockerfiles/train.dockerfile> ---
 
 ### Question 16
 

@@ -22,6 +22,7 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 
 # Copy application code
 COPY src/ src/
+COPY models/ models/
 
 # Set the entrypoint for evaluation
 ENTRYPOINT ["uv", "run", "src/ml_ops_59/evaluate.py"]
