@@ -234,7 +234,7 @@ will check the repositories and the code to verify your answers.
 >
 > Answer:
 
---- Total code coverage so far is 29%. We would not trust that our code is error free with a coverage of 100% because the testings have to be clever and well thought for it to be error free. We cannot predict every error that we run into so there will naturally be some ongoing debugging/error solving as we execute the code. ---
+--- Total code coverage is around 46%. We would not trust that our code is error free with a coverage of 100% because the testings have to be clever and well thought for it to be error free. We cannot predict every error that we run into so there will naturally be some ongoing debugging/error solving as we execute the code.  Coverage only tells us that lines were executed during tests, not that the tests contain strong assertions or validate the right behavior. It is possible to reach high coverage with weak tests that do not catch logical errors. Thus, even with high coverage we can not be sure the code is fully operatable---
 
 ### Question 9
 
@@ -249,7 +249,7 @@ will check the repositories and the code to verify your answers.
 >
 > Answer:
 
---- Branches and pull requests were not used in this project, as development was done directly on the main branch- This is also because our group was working close together in the project so we could ealisy align the work being done. Using branches and pull requests could have improved version control. Branches allow features or fixes to be developed in isolation, while pull requests enable code review and safer integration, reducing the risk of errors and improving collaboration. ---
+--- Branches and pull requests were limited used in this project, as development was done directly on the main branch- This is also because our group was working close together in the project so we could ealisy align the work being done. Using branches and pull requests could have improved version control. Branches allow features or fixes to be developed in isolation, while pull requests enable code review and safer integration, reducing the risk of errors and improving collaboration. Branches and pull request were only used when we implementing workflows that trigges when data and the model changes. ---
 
 ### Question 10
 
@@ -281,7 +281,9 @@ will check the repositories and the code to verify your answers.
 >
 > Answer:
 
---- question 11 fill here ---
+--- We have organized our continuous integration into multiple GitHub Actions workflows, each responsible for a specific aspect of quality assurance and automation. One workflow focuses on code quality, where we run linting and formatting checks using Ruff to ensure consistent style and catch common programming errors. Another workflow is responsible for running unit tests, where we execute the test suite using pytest. This workflow validates the correctness of core functionality such as data loading, model training, evaluation logic. We run the same checks on multiple operating systems ubuntu, windows, and macos-latest and a fixed Python version. This helps ensure that the project behaves consistently across different environments.Anexample of a triggered workflow can be seen here:https://github.com/AlbertFrydensberg/ML_Ops_59/actions/runs/21249105272
+We also have an example where the workflows fails here:https://github.com/AlbertFrydensberg/ML_Ops_59/actions/runs/21245542513
+in this case we can see where the error occurs and fix it. 
 
 ## Running code and tracking experiments
 
