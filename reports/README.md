@@ -200,7 +200,7 @@ will check the repositories and the code to verify your answers.
 >
 > Answer:
 
---- question 6 fill here ---
+--- For linting and formatting, we used Ruff, configured through the project configuration, to enforce PEP 8–compliant formatting, consistent import ordering, removal of unused imports, and detection of common errors such as undefined variables. These checks are automatically executed in our GitHub Actions workflows to ensure code quality is maintained across all contributions. We also experimented with mypy, however it was added too late in the process. These concepts are important in larger project as they help different developers understand each others code, and enshures that it is sat up in the same way. Additionally it is very valuable when you are trying to understand code written by others. While mypy was not implemented, we have tried to add decriptions where it is necessary. We also tried to add type hints, however this is not done consistenly.  ---
 
 ## Version control
 
