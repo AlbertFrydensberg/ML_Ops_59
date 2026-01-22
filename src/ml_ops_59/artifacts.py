@@ -8,6 +8,12 @@ import joblib
 from sklearn.base import BaseEstimator
 from sklearn.preprocessing import StandardScaler
 
+# Glue between training & inference
+
+# This module exists to:
+    # Save models consistently
+    # Load models safely
+
 
 def get_repo_root() -> Path:
     # src/ml_ops_59/artifacts.py -> parents[0]=ml_ops_59, [1]=src, [2]=repo root
