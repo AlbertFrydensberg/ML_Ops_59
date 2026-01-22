@@ -11,8 +11,8 @@ from sklearn.preprocessing import StandardScaler
 # Glue between training & inference
 
 # This module exists to:
-    # Save models consistently
-    # Load models safely
+# Save models consistently
+# Load models safely
 
 
 def get_repo_root() -> Path:
