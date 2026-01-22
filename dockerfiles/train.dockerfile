@@ -9,19 +9,20 @@ RUN apt update && \
 # Set working directory
 WORKDIR /
 
-# Copy dependency files first (for better caching)
+# Dependency filees 
 COPY uv.lock uv.lock
 COPY pyproject.toml pyproject.toml
 COPY README.md README.md
+COPY LICENSE LICENSE
 
-# Install dependencies with cache mount for faster rebuilds
+# Dependencies with cache mount
 ENV UV_LINK_MODE=copy
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --locked --no-cache --no-install-project
 
 # Copy application code
 COPY src/ src/
-COPY data/ data/
+
 
 # Set the entrypoint for training
-ENTRYPOINT ["uv", "run", "src/ml_ops_59/train.py"]
+ENTRYPOINT ["uv", "run", "python", "src/ml_ops_59/train.py"]
