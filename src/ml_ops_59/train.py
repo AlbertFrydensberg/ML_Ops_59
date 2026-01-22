@@ -59,16 +59,18 @@ def train_single(
     preds = model.predict(X_test)
     acc = accuracy_score(y_test, preds)
 
-    # SHAP
-    generate_shap_explanations(
-        model=model,
-        X_train=X_train,
-        X_test=X_test,
-        feature_names=X.columns.tolist(),
-        n_background=50,
-        n_explain=10,
-        output_dir="reports/figures",
-    )
+    # SHAP (skip in CI or when explicitly disabled)
+    # Set SKIP_SHAP=1 to disable.
+    if os.getenv("SKIP_SHAP", "0") != "1":
+        generate_shap_explanations(
+            model=model,
+            X_train=X_train,
+            X_test=X_test,
+            feature_names=X.columns.tolist(),
+            n_background=50,
+            n_explain=10,
+            output_dir="reports/figures",
+        )
 
     return float(acc)
 

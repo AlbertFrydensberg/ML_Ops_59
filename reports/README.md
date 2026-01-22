@@ -83,14 +83,14 @@ will check the repositories and the code to verify your answers.
 * [x] Add caching and multi-os/python/pytorch testing to your continuous integration (M17)
 * [x] Add a linting step to your continuous integration (M17)
 * [x] Add pre-commit hooks to your version control setup (M18)
-* [ ] Add a continues workflow that triggers when data changes (M19)
-* [ ] Add a continues workflow that triggers when changes to the model registry is made (M19)
+* [x] Add a continues workflow that triggers when data changes (M19)
+* [x] Add a continues workflow that triggers when changes to the model registry is made (M19)
 * [x] Create a data storage in GCP Bucket for your data and link this with your data version control setup (M21)
 * [ ] Create a trigger workflow for automatically building your docker images (M21)
 * [x] Get your model training in GCP using either the Engine or Vertex AI (M21)
 * [x] Create a FastAPI application that can do inference using your model (M22)
 * [ ] Deploy your model in GCP using either Functions or Run as the backend (M23)
-* [ ] Write API tests for your application and setup continues integration for these (M24)
+* [x] Write API tests for your application and setup continues integration for these (M24)
 * [ ] Load test your application (M24)
 * [ ] Create a more specialized ML-deployment API using either ONNX or BentoML, or both (M25)
 * [ ] Create a frontend for your API (M26)
@@ -350,7 +350,7 @@ wandb agent <our-sweep-id> ---
 >
 > Answer:
 
---- For this project we developed three docker files: One for training, one for evaluation and one for API deployment. We separated these into three distinct Dockerfiles because they serve different purposes and have different lifecycles. The training container runs batch jobs to train models and needs write access to save checkpoints. The evaluation container runs inference on test data and only requires read access to trained models. The API container runs continuously as a web service to serve predictions to users. All Dockerfiles use the `ghcr.io/astral-sh/uv:python3.12-bookworm-slim` base image for fast dependency management with uv. To run the training docker image: `docker run --rm train:latest` Link to docker file for training: <https://github.com/AlbertFrydensberg/ML_Ops_59/blob/main/dockerfiles/train.dockerfile> ---
+--- We developed two Docker images: one for training and one for API deployment. Both Dockerfiles use the `ghcr.io/astral-sh/uv:python3.12-bookworm-slim` base image for fast dependency management with uv, and implement cache mounting for faster rebuilds, as shown in the guide. We separated these into two distinct Dockerfiles because they serve different purposes. The training container runs batch jobs to train models and needs write access to save checkpoints. The API container runs continuously as a web service to serve predictions to users. It uses unicorn for web acess. We initially considered creating a separate evaluation Dockerfile, but since evaluation is already integrated into our training pipeline (train.py), a separate container would be redundant. This is something we'll be aware of in future cases. All Dockerfiles use the `ghcr.io/astral-sh/uv:python3.12-bookworm-slim` base image for fast dependency management with uv. To run the training docker image: `docker run --rm train:latest` Link to docker file for training: <https://github.com/AlbertFrydensberg/ML_Ops_59/blob/main/dockerfiles/train.dockerfile> ---
 
 ### Question 16
 
