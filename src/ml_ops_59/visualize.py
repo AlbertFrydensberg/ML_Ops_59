@@ -10,7 +10,7 @@ from typing import Optional, Union
 
 import matplotlib
 
-matplotlib.use("Agg")  # Use non-interactive backend
+matplotlib.use("Agg")  # Use non-interactive backend (otherwise windows had some trouble)
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd

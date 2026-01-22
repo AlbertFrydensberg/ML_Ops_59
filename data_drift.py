@@ -1,8 +1,9 @@
-import pandas as pd
-import kagglehub
 import os
-from evidently.legacy.report import Report
+
+import kagglehub
+import pandas as pd
 from evidently.legacy.metric_preset import DataDriftPreset
+from evidently.legacy.report import Report
 
 path = kagglehub.dataset_download("tawfikelmetwally/wine-dataset")
 reference_data = pd.read_csv(os.path.join(path, os.listdir(path)[0]))
