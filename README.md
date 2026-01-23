@@ -28,10 +28,14 @@ Wine classification project with a standardized MLOps structure
 
 The directory structure of the project looks like this:
 ```txt
-├── .github/                  # Github actions and dependabot
-│   ├── dependabot.yaml
-│   └── workflows/
-│       └── tests.yaml
+├── .dvc/                     # DVC setup
+│   ├── .gitignore
+│   └── config
+├── .github/workflows         # Github actions and dependabot
+│   ├── ci.yaml
+│   ├── cml_data.yaml
+│   ├── cml_model_registry.yaml
+│   └── tests.yaml
 ├── configs/                  # Configuration files
 │   ├── config.yaml
 │   ├── sweep.yaml
@@ -46,7 +50,6 @@ The directory structure of the project looks like this:
 │   └── source/
 │       └── index.md
 ├── models/                   # Trained models
-├── notebooks/                # Jupyter notebooks
 ├── outputs/                  # What is this used for?
 ├── reports/                  # Reports
 │   └── figures/              
