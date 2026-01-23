@@ -36,27 +36,29 @@ The directory structure of the project looks like this:
 │   ├── cml_data.yaml
 │   ├── cml_model_registry.yaml
 │   └── tests.yaml
+├── .ruff_cache 
+├── .venv
 ├── configs/                  # Configuration files
 │   ├── config.yaml
-│   ├── sweep.yaml
+│   └── sweep.yaml
+├── dockerfiles/
 ├── data/                     # Data directory
 │   ├── processed
 │   └── raw
 ├── dockerfiles/              # Dockerfiles
 │   ├── api.Dockerfile
 │   └── train.Dockerfile
-├── docs/                     # Documentation (added later?)
-│   ├── mkdocs.yml
-│   └── source/
-│       └── index.md
 ├── models/                   # Trained models
-├── outputs/                  # What is this used for?
-├── reports/                  # Reports
-│   └── figures/              
+├── outputs/                 
+├── reports/  
+│   ├── figures/             
+│   └── README.md              
 ├── src/                      # Source code
-│   ├── project_name/
+│   ├── ml_ops_59/
+│   │   ├── configs/
 │   │   ├── __init__.py
 │   │   ├── api.py
+│   │   ├── artifacts.py
 │   │   ├── cli.py
 │   │   ├── data.py
 │   │   ├── evaluate.py
@@ -67,14 +69,25 @@ The directory structure of the project looks like this:
 │   │   └── wandb_logger.py
 └── tests/                    # Tests
 │   ├── __init__.py
+│   ├── locust.py
 │   ├── test_api.py
 │   ├── test_data.py
 │   └── test_model.py
+├── wandb/                    # Weights and biases
+├── .dvcignore
 ├── .gitignore
 ├── .pre-commit-config.yaml
+├── AGENTS.md
+├── data_drift.py
+├── data.dvc
+├── dataset_statistics.py
 ├── LICENSE
+├── model_registry_report.py
 ├── pyproject.toml            # Python project file
 ├── README.md                 # Project README
+├── report.py
+├── sweep.yaml
+├── uv.lock
 └── tasks.py                  # Project tasks
 ```
 
