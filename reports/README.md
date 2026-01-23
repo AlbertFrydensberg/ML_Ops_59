@@ -526,7 +526,7 @@ Visit website and go nuts.
 
 Below is a load test result for 50 users and 5 spawn rate:
 
-`![my_image](figures/load_test.png)`
+![Load test result](figures/load_test.png)
 
  ---
 
