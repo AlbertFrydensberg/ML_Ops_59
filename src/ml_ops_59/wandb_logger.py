@@ -60,14 +60,13 @@ class WandBLogger:
         if self.enabled:
             wandb.config.update(cfg, allow_val_change=True)
 
-    def log_confusion_matrix(
-        self,
-        y_true: np.ndarray,
-        y_pred: np.ndarray,
-        class_names: Optional[list] = None,
-    ) -> None:
+    def log_confusion_matrix(self, y_true: np.ndarray, y_pred: np.ndarray, class_names: Optional[list] = None) -> None:
         if not self.enabled:
             return
+
+        # Ensure W&B receives a plain Python list (OmegaConf ListConfig can break this)
+        if class_names is not None:
+            class_names = list(class_names)
 
         try:
             wandb.log(
@@ -81,21 +80,24 @@ class WandBLogger:
                 }
             )
         except Exception:
-            # Very simple fallback
             try:
                 from sklearn.metrics import confusion_matrix as sklearn_cm
 
                 cm = sklearn_cm(y_true, y_pred)
+                cols = class_names if class_names is not None else [f"Class {i}" for i in range(cm.shape[1])]
+                cols = list(cols)  # extra safety
+
                 wandb.log(
                     {
                         "confusion_matrix_data": wandb.Table(
                             data=cm.tolist(),
-                            columns=class_names if class_names else [f"Class {i}" for i in range(cm.shape[1])],
+                            columns=cols,
                         )
                     }
                 )
             except Exception as e:
                 print(f"Warning: Could not log confusion matrix to WandB: {e}")
+
 
     def log_image(self, name: str, image_path: str) -> None:
         if self.enabled:
