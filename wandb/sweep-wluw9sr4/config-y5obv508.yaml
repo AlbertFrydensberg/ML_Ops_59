@@ -1,0 +1,12 @@
+wandb_version: 1
+
+K:
+  value: 8
+cv_folds:
+  value: 5
+p:
+  value: 1
+seed:
+  value: 42
+weights:
+  value: distance

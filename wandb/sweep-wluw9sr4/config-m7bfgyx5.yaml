@@ -1,0 +1,12 @@
+wandb_version: 1
+
+K:
+  value: 2
+cv_folds:
+  value: 3
+p:
+  value: 1
+seed:
+  value: 42
+weights:
+  value: uniform

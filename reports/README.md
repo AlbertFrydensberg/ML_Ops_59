@@ -307,7 +307,12 @@ The CI pipeline is triggered on every push and pull request to the main branch, 
 >
 > Answer:
 
---- Experiments were configured and tracked using Weights & Biases (W&B) instead of static configuration files. Hyperparameters such as the number of neighbours, train–test split, and random seed were logged for each run. Hyperparameter optimisation was performed using W&B sweeps. Experiments were executed from the command line, for example: python train.py and sweeps were launched using wandb sweep sweep.yaml
+--- We configured experiments using Hydra config files (YAML config groups under src/ml_ops_59/configs/) and tracked each run with Weights & Biases (W&B). Hydra lets us compose defaults (model, data, training, wandb) and override hyperparameters from the CLI, while W&B logs configs + metrics (and supports sweeps). Example runs:
+
+python src/ml_ops_59/train.py task=train model.n_neighbors=7 model.weights=distance model.p=2 data.seed=42
+python src/ml_ops_59/train.py task=train data.test_size=0.25
+
+
 wandb agent <our-sweep-id> ---
 
 ### Question 13
@@ -323,7 +328,13 @@ wandb agent <our-sweep-id> ---
 >
 > Answer:
 
---- Reproducibility was ensured primarily through systematic experiment tracking using Weights & Biases (W&B). For each experiment, all relevant hyperparameters (such as the number of neighbours, train–test split, and random seed) as well as performance metrics were automatically logged in the WandB webside. This ensured that no information was lost between runs and that results could be traced back to the exact configuration that produced them. Additionally, fixed random seeds were used in data splitting to make experiments deterministic. W&B also stores timestamps, code versions, and run histories, which allows experiments to be compared and revisited at a later time. To reproduce an experiment, one can rerun the training script using the logged hyperparameters or relaunch a specific W&B run directly. Combined with version control in Git, this setup provides a clear and reproducible experimental workflow. ---
+--- Reproducibility was ensured through a combination of Hydra configs, fixed seeds, Git version control, and W&B experiment tracking. Each run starts from a known configuration composition (e.g., model=knn, data=wine, training=default, wandb=default) and we override values explicitly from the CLI, so the exact setup is always recoverable. During training we set np.random.seed(seed) and use deterministic data splits (train_test_split(..., random_state=seed, stratify=...)) and cross-validation (StratifiedKFold(..., shuffle=True, random_state=seed)), which makes results repeatable for the same seed/hyperparameters.
+
+To avoid losing information, we log the full hyperparameter set, fold-level metrics, aggregated CV metrics, and artifacts (e.g., confusion matrix image) to W&B ; W&B also records run history and (optionally) the code state. To reproduce a run, we copy the hyperparameters from the W&B run config and rerun:
+
+python src/ml_ops_59/train.py task=sweep model.n_neighbors=8 model.weights=uniform model.p=2 training.cv_folds=5 data.seed=42
+
+ ---
 
 ### Question 14
 
@@ -340,7 +351,15 @@ wandb agent <our-sweep-id> ---
 >
 > Answer:
 
---- question 14 fill here ---
+--- In W&B we tracked both hyperparameters and evaluation metrics to compare KNN variants systematically. For sweeps, each W&B run corresponds to one hyperparameter trial (e.g., K, weights, p, cv_folds, seed). Within each trial we log fold-level metrics from Stratified K-Fold cross-validation: fold_accuracy, fold_precision, fold_recall, and fold_f1. These are important because they show stability across folds—a model with high mean accuracy but large variation across folds may be unreliable.
+
+After all folds complete, we log aggregated CV metrics: cv_accuracy_mean and cv_accuracy_std, which summarize overall performance and robustness. We also compute out-of-fold (OOF) predictions for all samples and log cv_precision_oof, cv_recall_oof, and cv_f1_oof. OOF metrics are useful because they approximate “performance on unseen data” across the full dataset without training on the same sample it is evaluated on.
+
+Finally, we log a confusion matrix in two forms: (1) as a saved PNG image (confusion_matrix.png) and (2) as an interactive W&B confusion matrix plot. This helps diagnose which classes are confused (e.g., class 2 vs class 3), which raw accuracy alone can hide.
+
+We have used the the sweep.yaml in the root of the project
+
+ ---
 
 ### Question 15
 
