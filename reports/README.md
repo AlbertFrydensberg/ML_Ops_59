@@ -283,7 +283,12 @@ will check the repositories and the code to verify your answers.
 
 --- We have organized our continuous integration into multiple GitHub Actions workflows, each responsible for a specific aspect of quality assurance and automation. One workflow focuses on code quality, where we run linting and formatting checks using Ruff to ensure consistent style and catch common programming errors. Another workflow is responsible for running unit tests, where we execute the test suite using pytest. This workflow validates the correctness of core functionality such as data loading, model training, evaluation logic. We run the same checks on multiple operating systems ubuntu, windows, and macos-latest and a fixed Python version. This helps ensure that the project behaves consistently across different environments.Anexample of a triggered workflow can be seen here:https://github.com/AlbertFrydensberg/ML_Ops_59/actions/runs/21249105272
 We also have an example where the workflows fails here:https://github.com/AlbertFrydensberg/ML_Ops_59/actions/runs/21245542513
-in this case we can see where the error occurs and fix it. ---
+in this case we can see where the error occurs and fix it.
+
+We also included continuous integration API tests for our FastAPI application. The API tests use FastAPI’s TestClient to verify that endpoints such as /health and /predict behave as expected. 
+
+The CI pipeline is triggered on every push and pull request to the main branch, ensuring that changes are continuously validated before being merged.
+ ---
 
 ## Running code and tracking experiments
 
