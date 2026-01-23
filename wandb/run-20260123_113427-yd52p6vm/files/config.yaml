@@ -1,0 +1,85 @@
+_wandb:
+    value:
+        cli_version: 0.24.0
+        e:
+            f5z60q7jw0q3zzg0jxzao0otb0ltutd4:
+                apple:
+                    ecpuCores: 6
+                    gpuCores: 8
+                    memoryGb: 16
+                    name: Apple M4
+                    pcpuCores: 4
+                    ramTotalBytes: "17179869184"
+                args:
+                    - task=sweep
+                codePath: src/ml_ops_59/sweep_entry.py
+                codePathLocal: src/ml_ops_59/sweep_entry.py
+                cpu_count: 10
+                cpu_count_logical: 10
+                disk:
+                    /:
+                        total: "245107195904"
+                        used: "185131241472"
+                email: s214995@dtu.dk
+                executable: /Users/victorstege/Documents/GitHub/ML_Ops_59/.venv/bin/python
+                git:
+                    commit: b7e2ee48275e92639f30dba3bcf0d50707d351df
+                    remote: https://github.com/AlbertFrydensberg/ML_Ops_59.git
+                host: MacBook-Air.local
+                memory:
+                    total: "17179869184"
+                os: macOS-26.1-arm64-arm-64bit
+                program: /Users/victorstege/Documents/GitHub/ML_Ops_59/src/ml_ops_59/sweep_entry.py
+                python: CPython 3.12.12
+                root: /Users/victorstege/Documents/GitHub/ML_Ops_59
+                startedAt: "2026-01-23T10:34:27.103486Z"
+                writerId: f5z60q7jw0q3zzg0jxzao0otb0ltutd4
+        m: []
+        python_version: 3.12.12
+        t:
+            "1":
+                - 5
+                - 50
+                - 53
+                - 105
+            "2":
+                - 5
+                - 50
+                - 53
+                - 105
+            "3":
+                - 2
+                - 16
+                - 61
+            "4": 3.12.12
+            "5": 0.24.0
+            "12": 0.24.0
+            "13": darwin-arm64
+K:
+    value: 5
+cv_folds:
+    value: 5
+cv_strategy:
+    value: StratifiedKFold(shuffle=True)
+data.seed:
+    value: 42
+metric:
+    value: minkowski
+model:
+    value: KNeighborsClassifier
+model.n_neighbors:
+    value: 5
+model.p:
+    value: 2
+model.weights:
+    value: uniform
+p:
+    value: 2
+scaler:
+    value: StandardScaler
+seed:
+    value: 42
+training.cv_folds:
+    value: 5
+weights:
+    value: uniform

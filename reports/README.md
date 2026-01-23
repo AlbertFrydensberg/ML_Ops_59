@@ -285,7 +285,7 @@ will check the repositories and the code to verify your answers.
 We also have an example where the workflows fails here:https://github.com/AlbertFrydensberg/ML_Ops_59/actions/runs/21245542513
 in this case we can see where the error occurs and fix it.
 
-We also included continuous integration API tests for our FastAPI application. The API tests use FastAPI’s TestClient to verify that endpoints such as /health and /predict behave as expected. 
+We also included continuous integration API tests for our FastAPI application. The API tests use FastAPI’s TestClient to verify that endpoints such as /health and /predict behave as expected.
 
 The CI pipeline is triggered on every push and pull request to the main branch, ensuring that changes are continuously validated before being merged.
  ---
@@ -358,6 +358,13 @@ After all folds complete, we log aggregated CV metrics: cv_accuracy_mean and cv_
 Finally, we log a confusion matrix in two forms: (1) as a saved PNG image (confusion_matrix.png) and (2) as an interactive W&B confusion matrix plot. This helps diagnose which classes are confused (e.g., class 2 vs class 3), which raw accuracy alone can hide.
 
 We have used the the sweep.yaml in the root of the project
+
+--- ![WandB result1](figures/wandb1.png)
+--- ![WandB result2](figures/wandb2.png)
+
+
+
+link to WandB: https://wandb.ai/s214995-danmarks-tekniske-universitet-dtu/ML_Ops_59/sweeps/uhox2i0o?fbclid=IwY2xjawPgMBNleHRuA2FlbQIxMABzcnRjBmFwcF9pZBAyMjIwMzkxNzg4MjAwODkyAAEei8nIPgDCTNzoY1yEattiHPFFvaBWNMMELrGOuJq4kLJmGtrKd-r-Y97pNoU_aem_bkyW5V-q1tyQMqSD85UF0g&nw=nwusers214995
 
  ---
 
@@ -448,7 +455,8 @@ We used the compute engine to run our KNN training with the CPU-based VMs, train
 >
 > Answer:
 
---- question 21 fill here ---
+--- ![Build result](figures/build.png)
+The figure above shows the GCP Cloud Build history for our project. It documents multiple container builds triggered during the deployment attempts of our FastAPI service to Cloud Run. Each entry corresponds to a build initiated by gcloud run deploy, including timestamps, regions, and build durations. The build history highlights an important aspect of cloud-based development: iterative debugging and redeployment. Several builds failed due to configuration issues (we worked with Dockerfile placement, build context, and command syntax...), which is clearly reflected in the repeated failed build entries. This history is useful both for debugging – we could inspect build logs and for reproducibility, as each build is uniquely identified and traceable.---
 
 ### Question 22
 
