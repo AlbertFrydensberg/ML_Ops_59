@@ -283,7 +283,12 @@ will check the repositories and the code to verify your answers.
 
 --- We have organized our continuous integration into multiple GitHub Actions workflows, each responsible for a specific aspect of quality assurance and automation. One workflow focuses on code quality, where we run linting and formatting checks using Ruff to ensure consistent style and catch common programming errors. Another workflow is responsible for running unit tests, where we execute the test suite using pytest. This workflow validates the correctness of core functionality such as data loading, model training, evaluation logic. We run the same checks on multiple operating systems ubuntu, windows, and macos-latest and a fixed Python version. This helps ensure that the project behaves consistently across different environments.Anexample of a triggered workflow can be seen here:https://github.com/AlbertFrydensberg/ML_Ops_59/actions/runs/21249105272
 We also have an example where the workflows fails here:https://github.com/AlbertFrydensberg/ML_Ops_59/actions/runs/21245542513
-in this case we can see where the error occurs and fix it. ---
+in this case we can see where the error occurs and fix it.
+
+We also included continuous integration API tests for our FastAPI application. The API tests use FastAPI’s TestClient to verify that endpoints such as /health and /predict behave as expected. 
+
+The CI pipeline is triggered on every push and pull request to the main branch, ensuring that changes are continuously validated before being merged.
+ ---
 
 ## Running code and tracking experiments
 
@@ -302,7 +307,12 @@ in this case we can see where the error occurs and fix it. ---
 >
 > Answer:
 
---- Experiments were configured and tracked using Weights & Biases (W&B) instead of static configuration files. Hyperparameters such as the number of neighbours, train–test split, and random seed were logged for each run. Hyperparameter optimisation was performed using W&B sweeps. Experiments were executed from the command line, for example: python train.py and sweeps were launched using wandb sweep sweep.yaml
+--- We configured experiments using Hydra config files (YAML config groups under src/ml_ops_59/configs/) and tracked each run with Weights & Biases (W&B). Hydra lets us compose defaults (model, data, training, wandb) and override hyperparameters from the CLI, while W&B logs configs + metrics (and supports sweeps). Example runs:
+
+python src/ml_ops_59/train.py task=train model.n_neighbors=7 model.weights=distance model.p=2 data.seed=42
+python src/ml_ops_59/train.py task=train data.test_size=0.25
+
+
 wandb agent <our-sweep-id> ---
 
 ### Question 13
@@ -318,7 +328,13 @@ wandb agent <our-sweep-id> ---
 >
 > Answer:
 
---- Reproducibility was ensured primarily through systematic experiment tracking using Weights & Biases (W&B). For each experiment, all relevant hyperparameters (such as the number of neighbours, train–test split, and random seed) as well as performance metrics were automatically logged in the WandB webside. This ensured that no information was lost between runs and that results could be traced back to the exact configuration that produced them. Additionally, fixed random seeds were used in data splitting to make experiments deterministic. W&B also stores timestamps, code versions, and run histories, which allows experiments to be compared and revisited at a later time. To reproduce an experiment, one can rerun the training script using the logged hyperparameters or relaunch a specific W&B run directly. Combined with version control in Git, this setup provides a clear and reproducible experimental workflow. ---
+--- Reproducibility was ensured through a combination of Hydra configs, fixed seeds, Git version control, and W&B experiment tracking. Each run starts from a known configuration composition (e.g., model=knn, data=wine, training=default, wandb=default) and we override values explicitly from the CLI, so the exact setup is always recoverable. During training we set np.random.seed(seed) and use deterministic data splits (train_test_split(..., random_state=seed, stratify=...)) and cross-validation (StratifiedKFold(..., shuffle=True, random_state=seed)), which makes results repeatable for the same seed/hyperparameters.
+
+To avoid losing information, we log the full hyperparameter set, fold-level metrics, aggregated CV metrics, and artifacts (e.g., confusion matrix image) to W&B ; W&B also records run history and (optionally) the code state. To reproduce a run, we copy the hyperparameters from the W&B run config and rerun:
+
+python src/ml_ops_59/train.py task=sweep model.n_neighbors=8 model.weights=uniform model.p=2 training.cv_folds=5 data.seed=42
+
+ ---
 
 ### Question 14
 
@@ -335,7 +351,15 @@ wandb agent <our-sweep-id> ---
 >
 > Answer:
 
---- question 14 fill here ---
+--- In W&B we tracked both hyperparameters and evaluation metrics to compare KNN variants systematically. For sweeps, each W&B run corresponds to one hyperparameter trial (e.g., K, weights, p, cv_folds, seed). Within each trial we log fold-level metrics from Stratified K-Fold cross-validation: fold_accuracy, fold_precision, fold_recall, and fold_f1. These are important because they show stability across folds—a model with high mean accuracy but large variation across folds may be unreliable.
+
+After all folds complete, we log aggregated CV metrics: cv_accuracy_mean and cv_accuracy_std, which summarize overall performance and robustness. We also compute out-of-fold (OOF) predictions for all samples and log cv_precision_oof, cv_recall_oof, and cv_f1_oof. OOF metrics are useful because they approximate “performance on unseen data” across the full dataset without training on the same sample it is evaluated on.
+
+Finally, we log a confusion matrix in two forms: (1) as a saved PNG image (confusion_matrix.png) and (2) as an interactive W&B confusion matrix plot. This helps diagnose which classes are confused (e.g., class 2 vs class 3), which raw accuracy alone can hide.
+
+We have used the the sweep.yaml in the root of the project
+
+ ---
 
 ### Question 15
 
@@ -480,7 +504,7 @@ curl -X POST http://localhost:8000/predict \
   -H "Content-Type: application/json" \
   -d '{"x":[13.2,1.7,2.3,15.6,100,2.8,3.1,0.3,1.9,5.6,1.0,3.2,1000]}'
 
-We chose not to deploy the API to the cloud due to time and scope constraints, and instead focused on ensuring that the local deployment was robust, testable, and reproducible. The API design should make it deployable in cloud.  
+We chose not to deploy the API to the cloud due to time and scope constraints, and instead focused on ensuring that the local deployment was robust, testable, and reproducible. The API design should make it deployable in cloud.
    ---
 
 ### Question 25
@@ -543,7 +567,7 @@ Below is a load test result for 50 users and 5 spawn rate:
 >
 > Answer:
 
---- question 26 fill here ---
+--- We did not fully manage to deploy the model for production in a fully correct version. However, we did set up some monitoring in our cloud for data drift monitoring of feature distributions (e.g. alcohol content, acidity, phenols) between a reference training dataset and the set used for the model. Here we used tools as Evidently, where we could detect changes in feature distributions over time. We could also have implemented  prediction monitoring (the monitoring concept and learning of it should be the same) which could track class distribution over time. In a real implementation this could be useful as a sudden shift in predicted wine classes could indicate drift, data quality issues, or changes in data collection procedures. We also implemented a little service-level monitoring for error rates in GCP Cloud Monitoring for the FastAPI service deployed on Cloud Run.---
 
 ## Overall discussion of project
 
@@ -562,7 +586,8 @@ Below is a load test result for 50 users and 5 spawn rate:
 >
 > Answer:
 
---- question 27 fill here ---
+--- During the project, it was group member s214985  who used GCP credits. In total, approximately 300 DKK worth of credits were consumed over the course of development. The service accounting for almost all of this usage was Compute Engine, which was used for model training. Training was executed multiple times to test different configurations (different K values) and validate the pipeline, making Compute Engine the dominant cost driver. Despite the repeated training runs, the overall cost remained low because the dataset was relatively small and the chosen model was a K- KNN classifier. What maybe also could explain the lower about of credits is that KNN has no expensive optimisation phase compared to more complex models such as deep neural networks, and training primarily consists of storing the dataset rather than performing iterative gradient-based updates. ---
+
 
 ### Question 28
 
@@ -627,13 +652,6 @@ Below is a load test result for 50 users and 5 spawn rate:
 > *We have used ChatGPT to help debug our code. Additionally, we used GitHub Copilot to help write some of our code.*
 > Answer:
 
-> *Student s215003 was in charge of developing of setting up the initial cookie cutter project and setting up the github repository.*
-
-> *Student s214995 was in charge of training our models in the cloud and deploying them afterwards and making docker containers for training our applications.*
-
-> *Student s214985 was in charge of setting up WandB, configurations and the training, evaluation and data scripts.*
-
-> *Student s214981 was in charge of training our models in the cloud and deploying them afterwards.*
-
-> *All members contributed to code by...*
-> *We have used ChatGPT to help debug our code. Additionally, we used GitHub Copilot to help write some of our code.*
+>--- All members of the group actively participated in the development of this project. We worked together in person on all days dedicated to project work, often solving tasks collaboratively. In several cases, multiple group members worked on the same task even though only one person ultimately pushed the changes to the repository.
+Student s214985 was primarily responsible for setting up and configuring Google Cloud Platform (GCP). s214995 was in charge of setting up the API, s214981 handled Docker and containerization, and s215003 was responsible for setting up the GitHub repository and integrating continuous workflows.
+We used ChatGPT to help debug errors, clarify unfamiliar concepts, improve code structure and readability, and assist with integration across different parts of the project.  ---

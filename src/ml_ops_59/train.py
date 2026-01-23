@@ -95,11 +95,13 @@ def sweep_trial_impl(cfg: DictConfig) -> float:
     )
 
     wandb_config = wandb_logger.config
-    k = int(wandb_config.get("K", cfg.model.n_neighbors))
-    cv_folds = int(wandb_config.get("cv_folds", cfg.training.cv_folds))
-    trial_seed = int(wandb_config.get("seed", cfg.data.seed))
-    weights = str(wandb_config.get("weights", cfg.model.weights)).lower()
-    p = int(wandb_config.get("p", cfg.model.p))
+
+    k = int(wandb_config.get("model.n_neighbors", cfg.model.n_neighbors))
+    cv_folds = int(wandb_config.get("training.cv_folds", cfg.training.cv_folds))
+    trial_seed = int(wandb_config.get("data.seed", cfg.data.seed))
+    weights = str(wandb_config.get("model.weights", cfg.model.weights)).lower()
+    p = int(wandb_config.get("model.p", cfg.model.p))
+
 
     # simple validation
     if weights not in {"uniform", "distance"}:
