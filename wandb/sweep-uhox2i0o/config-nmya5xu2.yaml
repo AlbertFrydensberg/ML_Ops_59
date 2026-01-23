@@ -1,0 +1,12 @@
+wandb_version: 1
+
+data.seed:
+  value: 42
+model.n_neighbors:
+  value: 7
+model.p:
+  value: 2
+model.weights:
+  value: distance
+training.cv_folds:
+  value: 3
