@@ -83,15 +83,15 @@ will check the repositories and the code to verify your answers.
 * [x] Add caching and multi-os/python/pytorch testing to your continuous integration (M17)
 * [x] Add a linting step to your continuous integration (M17)
 * [x] Add pre-commit hooks to your version control setup (M18)
-* [ ] Add a continues workflow that triggers when data changes (M19)
-* [ ] Add a continues workflow that triggers when changes to the model registry is made (M19)
+* [x] Add a continues workflow that triggers when data changes (M19)
+* [x] Add a continues workflow that triggers when changes to the model registry is made (M19)
 * [x] Create a data storage in GCP Bucket for your data and link this with your data version control setup (M21)
 * [ ] Create a trigger workflow for automatically building your docker images (M21)
 * [x] Get your model training in GCP using either the Engine or Vertex AI (M21)
 * [x] Create a FastAPI application that can do inference using your model (M22)
 * [ ] Deploy your model in GCP using either Functions or Run as the backend (M23)
 * [x] Write API tests for your application and setup continues integration for these (M24)
-* [ ] Load test your application (M24)
+* [x] Load test your application (M24)
 * [ ] Create a more specialized ML-deployment API using either ONNX or BentoML, or both (M25)
 * [ ] Create a frontend for your API (M26)
 
@@ -111,7 +111,7 @@ will check the repositories and the code to verify your answers.
 * [ ] Write some documentation for your application (M32)
 * [ ] Publish the documentation to GitHub Pages (M32)
 * [x] Revisit your initial project description. Did the project turn out as you wanted?
-* [ ] Create an architectural diagram over your MLOps pipeline
+* [x] Create an architectural diagram over your MLOps pipeline
 * [x] Make sure all group members have an understanding about all parts of the project
 * [x] Uploaded all your code to GitHub
 
@@ -496,7 +496,39 @@ We chose not to deploy the API to the cloud due to time and scope constraints, a
 >
 > Answer:
 
---- question 25 fill here ---
+--- We performed API testing using pytest and FastAPI’s TestClient, which allowed us to run integration-style tests against the endpoints without starting an external server. In test_api.py we test that /health returns HTTP 200 and a valid JSON response, and that /predict returns a valid prediction string. The predict test reads models/metadata.json to automatically match the number of expected features, ensuring the test stays consistent even if we retrain and overwrite the artifacts in models/.
+
+For load testing we used Locust. We created a minimal locustfile that repeatedly sends POST requests to /predict with a deterministic payload (a zero-vector of the correct feature length, also read from metadata.json). Locust then reports throughput (requests/sec), failure rate, and response time statistics (average and percentiles such as p95/p99). These metrics help quantify performance and whether the API remains stable under concurrent user load.
+
+Step-by-step guide to test:
+
+Ensure dependencies are installed
+
+uv sync
+
+Train once (so models/ artifacts exist), e.g.
+
+uv run python -m ml_ops_59.train model.n_neighbors=8
+
+Start the API (Terminal 1)
+
+uv run uvicorn ml_ops_59.api:app --host 127.0.0.1 --port 8000
+
+Confirm it works (Terminal 2)
+
+curl http://127.0.0.1:8000/health
+
+Run Locust
+
+uv run locust -f tests/performancetests/locustfile.py --host http://127.0.0.1:8000
+
+Visit website and go nuts.
+
+Below is a load test result for 50 users and 5 spawn rate:
+
+`![my_image](reports/figures/load_test.png)`
+
+ ---
 
 ### Question 26
 
