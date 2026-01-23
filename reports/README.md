@@ -480,7 +480,7 @@ curl -X POST http://localhost:8000/predict \
   -H "Content-Type: application/json" \
   -d '{"x":[13.2,1.7,2.3,15.6,100,2.8,3.1,0.3,1.9,5.6,1.0,3.2,1000]}'
 
-We chose not to deploy the API to the cloud due to time and scope constraints, and instead focused on ensuring that the local deployment was robust, testable, and reproducible. The API design should make it deployable in cloud.  
+We chose not to deploy the API to the cloud due to time and scope constraints, and instead focused on ensuring that the local deployment was robust, testable, and reproducible. The API design should make it deployable in cloud.
    ---
 
 ### Question 25
@@ -543,7 +543,7 @@ Below is a load test result for 50 users and 5 spawn rate:
 >
 > Answer:
 
---- question 26 fill here ---
+--- We did not fully manage to deploy the model for production in a fully correct version. However, we did set up some monitoring in our cloud for data drift monitoring of feature distributions (e.g. alcohol content, acidity, phenols) between a reference training dataset and the set used for the model. Here we used tools as Evidently, where we could detect changes in feature distributions over time. We could also have implemented  prediction monitoring (the monitoring concept and learning of it should be the same) which could track class distribution over time. In a real implementation this could be useful as a sudden shift in predicted wine classes could indicate drift, data quality issues, or changes in data collection procedures. We also implemented a little service-level monitoring for error rates in GCP Cloud Monitoring for the FastAPI service deployed on Cloud Run.---
 
 ## Overall discussion of project
 
@@ -562,7 +562,8 @@ Below is a load test result for 50 users and 5 spawn rate:
 >
 > Answer:
 
---- question 27 fill here ---
+--- During the project, it was group member s214985  who used GCP credits. In total, approximately 300 DKK worth of credits were consumed over the course of development. The service accounting for almost all of this usage was Compute Engine, which was used for model training. Training was executed multiple times to test different configurations (different K values) and validate the pipeline, making Compute Engine the dominant cost driver. Despite the repeated training runs, the overall cost remained low because the dataset was relatively small and the chosen model was a K- KNN classifier. What maybe also could explain the lower about of credits is that KNN has no expensive optimisation phase compared to more complex models such as deep neural networks, and training primarily consists of storing the dataset rather than performing iterative gradient-based updates. ---
+
 
 ### Question 28
 
