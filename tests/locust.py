@@ -2,7 +2,7 @@ import json
 import os
 from pathlib import Path
 
-from locust import HttpUser, task, between
+from locust import HttpUser, between, task
 
 
 def _load_feature_count() -> int:
@@ -25,6 +25,7 @@ class WineApiUser(HttpUser):
     """
     Minimal load test user that repeatedly calls POST /predict.
     """
+
     wait_time = between(0.1, 0.5)  # small think time between requests
 
     @task
