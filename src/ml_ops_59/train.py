@@ -1,9 +1,9 @@
 # src/ml_ops_59/train.py
 
 from __future__ import annotations
-from pathlib import Path
 
 import os
+from pathlib import Path
 
 import hydra
 import numpy as np
@@ -101,7 +101,6 @@ def sweep_trial_impl(cfg: DictConfig) -> float:
     trial_seed = int(wandb_config.get("data.seed", cfg.data.seed))
     weights = str(wandb_config.get("model.weights", cfg.model.weights)).lower()
     p = int(wandb_config.get("model.p", cfg.model.p))
-
 
     # simple validation
     if weights not in {"uniform", "distance"}:
@@ -203,13 +202,13 @@ def sweep_trial_impl(cfg: DictConfig) -> float:
     wandb_logger.log_image("confusion_matrix", out_path)
     wandb_logger.log_confusion_matrix(y, oof_preds, class_names=class_names)
 
-
     wandb_logger.finish()
 
     return acc_mean
 
 
 CONFIG_DIR = Path(__file__).resolve().parent / "configs"
+
 
 @hydra.main(config_path=str(CONFIG_DIR), config_name="config", version_base=None)
 def main(cfg: DictConfig):

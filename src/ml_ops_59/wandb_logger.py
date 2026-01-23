@@ -98,7 +98,6 @@ class WandBLogger:
             except Exception as e:
                 print(f"Warning: Could not log confusion matrix to WandB: {e}")
 
-
     def log_image(self, name: str, image_path: str) -> None:
         if self.enabled:
             wandb.log({name: wandb.Image(image_path)})
