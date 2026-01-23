@@ -628,13 +628,6 @@ Below is a load test result for 50 users and 5 spawn rate:
 > *We have used ChatGPT to help debug our code. Additionally, we used GitHub Copilot to help write some of our code.*
 > Answer:
 
-> *Student s215003 was in charge of developing of setting up the initial cookie cutter project and setting up the github repository.*
-
-> *Student s214995 was in charge of training our models in the cloud and deploying them afterwards and making docker containers for training our applications.*
-
-> *Student s214985 was in charge of setting up WandB, configurations and the training, evaluation and data scripts.*
-
-> *Student s214981 was in charge of training our models in the cloud and deploying them afterwards.*
-
-> *All members contributed to code by...*
-> *We have used ChatGPT to help debug our code. Additionally, we used GitHub Copilot to help write some of our code.*
+>--- All members of the group actively participated in the development of this project. We worked together in person on all days dedicated to project work, often solving tasks collaboratively. In several cases, multiple group members worked on the same task even though only one person ultimately pushed the changes to the repository.
+Student s214985 was primarily responsible for setting up and configuring Google Cloud Platform (GCP). s214995 was in charge of setting up the API, s214981 handled Docker and containerization, and s215003 was responsible for setting up the GitHub repository and integrating continuous workflows.
+We used ChatGPT to help debug errors, clarify unfamiliar concepts, improve code structure and readability, and assist with integration across different parts of the project.  ---
