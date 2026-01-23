@@ -359,6 +359,13 @@ Finally, we log a confusion matrix in two forms: (1) as a saved PNG image (confu
 
 We have used the the sweep.yaml in the root of the project
 
+--- ![WandB result1](figures/wandb1.png)
+--- ![WandB result2](figures/wandb2.png)
+
+
+
+link to WandB: https://wandb.ai/s214995-danmarks-tekniske-universitet-dtu/ML_Ops_59/sweeps/uhox2i0o?fbclid=IwY2xjawPgMBNleHRuA2FlbQIxMABzcnRjBmFwcF9pZBAyMjIwMzkxNzg4MjAwODkyAAEei8nIPgDCTNzoY1yEattiHPFFvaBWNMMELrGOuJq4kLJmGtrKd-r-Y97pNoU_aem_bkyW5V-q1tyQMqSD85UF0g&nw=nwusers214995
+
  ---
 
 ### Question 15
