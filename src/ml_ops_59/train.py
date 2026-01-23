@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import os
+from pathlib import Path
 
 import hydra
 import numpy as np
@@ -85,12 +86,11 @@ def sweep_trial_impl(cfg: DictConfig) -> float:
         project_name=cfg.wandb.project_name,
         enabled=cfg.wandb.enabled,
         config={
-            # seed Hydra defaults into W&B config (sweep overrides still work)
-            "K": cfg.model.n_neighbors,
-            "weights": cfg.model.weights,
-            "p": cfg.model.p,
-            "cv_folds": cfg.training.cv_folds,
-            "seed": cfg.data.seed,
+            "model.n_neighbors": cfg.model.n_neighbors,
+            "model.weights": cfg.model.weights,
+            "model.p": cfg.model.p,
+            "training.cv_folds": cfg.training.cv_folds,
+            "data.seed": cfg.data.seed,
         },
     )
 
@@ -101,7 +101,6 @@ def sweep_trial_impl(cfg: DictConfig) -> float:
     trial_seed = int(wandb_config.get("data.seed", cfg.data.seed))
     weights = str(wandb_config.get("model.weights", cfg.model.weights)).lower()
     p = int(wandb_config.get("model.p", cfg.model.p))
-
 
     # simple validation
     if weights not in {"uniform", "distance"}:
@@ -201,14 +200,17 @@ def sweep_trial_impl(cfg: DictConfig) -> float:
     # Save + log confusion matrix
     plot_confusion_matrix(confusion, class_names, out_path)
     wandb_logger.log_image("confusion_matrix", out_path)
-    wandb_logger.log_confusion_matrix(y, oof_preds, class_names)
+    wandb_logger.log_confusion_matrix(y, oof_preds, class_names=class_names)
 
     wandb_logger.finish()
 
     return acc_mean
 
 
-@hydra.main(config_path="configs", config_name="config", version_base=None)
+CONFIG_DIR = Path(__file__).resolve().parent / "configs"
+
+
+@hydra.main(config_path=str(CONFIG_DIR), config_name="config", version_base=None)
 def main(cfg: DictConfig):
     if cfg.task == "train":
         acc = train_single(
